@@ -8,12 +8,11 @@ import dataapi.views as datafetch
 def index(request):
     # get the count vectorizer instance
     if request.user.is_authenticated:
-        user_movies = datafetch.popularMovies()
+        user_movies = datafetch.indexContent(Profile.objects.get(user=request.user))
         # (Movies.objects.get(movie_id='1'))
-        return render(request, 'interface/index.html', {'user_movies': user_movies})
     else:
-        user_movies = datafetch.popularMovies()
-        return render(request, 'interface/index.html')
+        user_movies = datafetch.indexContent()
+    return render(request, 'interface/index.html', {'user_movies': user_movies})
     
 def userLogout(request):
     if request.user.is_authenticated:

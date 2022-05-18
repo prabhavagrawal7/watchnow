@@ -12,7 +12,8 @@ Saving features using joblib
 5. transformed_data
 6. movie_index
 """
-model, transformed_data, movie_indexes = load('./dataapi/data/required_contents.joblib')
+model, transformed_data, movie_indexes = load(
+    './dataapi/data/required_contents.joblib')
 links = pd.read_csv('./dataapi/data/links.csv', index_col=['movieId'])
 movie_genres = pd.read_csv('./dataapi/data/movies.csv', index_col=['movieId'])
 hash_loc = None
@@ -27,13 +28,16 @@ API_KEY = "62c56bbac67642762ecb788540b5888e"
         return self.movie_title
 """
 popular_movie_list = load('./dataapi/data/popular_movies.joblib')
-all_genres = pd.read_csv('./dataapi/data/all_genres.csv')
-genres_hash = dict()
+all_genres = pd.read_csv('./dataapi/data/all_genres.csv')['genres']
+genres_dict = load('./dataapi/data/genres_dict.joblib')
+
+
 def createHash():
     global hash_loc
     hash_loc = dict()
     for i, movie_index in enumerate(movie_indexes):
         hash_loc[movie_index] = i
+
 
 def fetch_images(r):
     try:
@@ -48,34 +52,37 @@ def fetch_images(r):
     if movie_img is None:
         movie_img = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
     return movie_img
-def fetch_genres(movie_id): 
+
+
+def fetch_genres(movie_id):
     genres_string = movie_genres.loc[movie_id]['genres']
-    # return a list of genres sep. by | 
+    # return a list of genres sep. by |
     return genres_string.split('|')
-    
-def fetch_movie(movie_id): 
+
+
+def fetch_movie(movie_id):
     try:
-        movie_obj = Movies.objects.get(movie_id = movie_id)
+        movie_obj = Movies.objects.get(movie_id=movie_id)
     except Movies.DoesNotExist:
-        movie_id = movie_id
-        tmdb_id =  links.loc[movie_id]['tmdbId']
+        tmdb_id = links.loc[movie_id]['tmdbId']
         url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={API_KEY}"
         r = requests.get(url).json()
         movie_title = r['original_title']
         movie_img = fetch_images(r)
         movie_desc = r['overview']
         movie_genres = fetch_genres(movie_id)
-        #creating movie object and saving in database
+        # creating movie object and saving in database
         movie = Movies(
             movie_id=movie_id,
             movie_title=movie_title,
             movie_img=movie_img,
             movie_desc=movie_desc,
-            movie_genres=movie_genres, 
+            movie_genres=movie_genres,
         )
         movie.save()
-        movie_obj = Movies.objects.get(movie_id = movie_id)
+        movie_obj = Movies.objects.get(movie_id=movie_id)
     return movie_obj
+
 
 def moviePageAPI(movie):
     if hash_loc is None:
@@ -94,21 +101,11 @@ def moviePageAPI(movie):
 
 def fetchMovieOnGenres(genres):
     # fetching by genres, sorting by popularity
-    global all_genres
-    global genres_hash
-    genres_required = dict()
-    for genre in all_genres['genres']:
-        genres_required[genre] = 20
-    
-    # set(all_genres['genres'].tolist())
-    for movie in popularMovies(500):
-        for genre in movie.genres: 
-            # taking account of genres needed 
-            if genres_required.get(genre) is not None:
-                genres_required[genre] -= 1
-                if genres_required.get(genre) == 0: 
-                    genres_required.pop(genre) 
-        
+    global genres_dict
+    movies = []
+    for movie_id in genres_dict[genres][:12]:
+        movies.append(fetch_movie(movie_id))
+    return movies
 
 """
 The whole logical content of the index page or the front page. 
@@ -117,25 +114,29 @@ ___________________________________________________________
 Popular movie list -> extracted from popularMovies
 Genres movie list -> extracted from user genres if user logged in
 """
-def indexContent(Profile) -> list(): 
-    contents = []
-    # show popular movies 
-    contents.append(popularMovies())
+
+
+def indexContent(Profile) -> dict():
+    contents = {}
+    # show popular movies
+    contents['Top movies'] = popularMovies(16)
     global all_genres
-    if Profile is None: 
-        # show genres popular movies 
-        for genres in all_genres:
-            contents.append(fetchMovieOnGenres(genres))
-    else: 
+    if Profile is None or Profile.user_reviews.get('genres_points') is None:
+
+        # show genres popular movies
+        for genres in sorted(all_genres)[:6]:
+            contents[f"Popular {genres} movies"] = (fetchMovieOnGenres(genres))
+    else:
         # genres_points will be in the dictionary format
         genre_list = list(Profile.user_reviews['genres_points'])
-        genre_list = sorted(genre_list, key=lambda x: x[1], reverse=True)
-        for genres, genre_liking in genre_list: 
-            contents.append(fetchMovieOnGenres(genres))
+        genre_list = sorted(genre_list, key=lambda x: x[1], reverse=True)[:6]
+        for genres, genre_liking in genre_list:
+            contents[f'Popular {genres} movies'] = fetchMovieOnGenres(genres)
     return contents
+
 
 def popularMovies(listing=100):
     movie_list = []
-    for movie_id in popular_movie_list[:listing]: 
+    for movie_id in popular_movie_list[:listing]:
         movie_list.append(fetch_movie(movie_id))
     return movie_list

@@ -6,14 +6,15 @@
 {% block body %}
 
 <body>
-    <h1>Recommended Action movies &starf; </h1>
-    <div class="movie-con" id='con1'>
+    {% for category_name, category_movies in user_movies.items %}
+    <h1>{{category_name}}</h1>
+    <div class="movie-con" id='{{category_name}}'>
         <div class="prev">
             <div class="adjuster">
                 <img src="{% static 'img/prev.svg' %}" alt="">
             </div>
         </div>
-        {% for movie in user_movies %}
+        {% for movie in category_movies %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="movie-slide">
         {% endif %}
@@ -31,110 +32,13 @@
         </div>
         {% endif %}
         {% endfor %}
-
-        <div class="movie-slide">
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img3.jpg' %}">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}">
-            </div>
-        </div>
-
         <div class="next">
             <div class="adjuster">
                 <img src="{% static 'img/next.svg' %}" alt="">
             </div>
         </div>
     </div>
-    <h1>Recommended Sci-fi Movies </h1>
-    <div class="movie-con" id='con2'>
-        <div class="prev">
-            <div class="adjuster">
-                <img src="{% static 'img/prev.svg' %}" alt="">
-            </div>
-        </div>
-        <div class="movie-slide">
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-        </div>
-        <div class="movie-slide">
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
-            </div>
-        </div>
-        <div class="next">
-            <div class="adjuster">
-                <img src="{% static 'img/next.svg' %}" alt="">
-            </div>
-        </div>
-    </div>
-    <h1>Recommended Family Movies</h1>
-    <div class="movie-con" id='con3'>
-        <div class="prev">
-            <div class="adjuster">
-                <img src="{% static 'img/prev.svg' %}" alt="">
-            </div>
-        </div>
-        <div class="movie-slide">
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-        </div>
-        <div class="movie-slide">
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
-            </div>
-            <div class="movie">
-                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
-            </div>
-        </div>
-        <div class="next">
-            <div class="adjuster">
-                <img src="{% static 'img/next.svg' %}" alt="">
-            </div>
-        </div>
-    </div>
+    {% endfor %}
     <script>
         carousels = document.getElementsByClassName('movie-con');
         var obj = {};
@@ -164,8 +68,20 @@
             carouselinfo[1][carouselinfo[0]].style.display = "flex";
             carouselinfo[1][carouselinfo[0] - 1].style.display = "none";
         }
-        // document.querySelectorAll('.next')
-
+        // hovering over movie element
+{% comment %} 
+        ${'.movie'}.hover(){
+            function(){
+                print("he")
+                ${this}.children('.movie-details').style.display = "block"
+                ${this}.children('.movie-details').style.position = "relative"
+            }, 
+            function(){
+            
+            }
+        }
+        document.getElementById('movie')
+         {% endcomment %}
     </script>
 </body>
 {% endblock body %}
