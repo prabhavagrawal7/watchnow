@@ -1,0 +1,47 @@
+{% extends 'interface/basic.html' %}
+{% load static %}
+{% load tags %}
+{% block body %}
+{% if moviefound is None %}
+<h1>Sorry, this page doesn't exists !!!</h1>
+{% else %}
+<div class="left-align">
+    <img src="{% static 'img/img1.jpg' %}" alt="noimg">    
+</div>
+<div class="right-align">
+    <h1>{movie.movie_title}</h1>
+    <h2>Movie Rating: &#11088;{movie.movie_rating}</h2>
+    {% if user.is_authenticated %}
+    Rate Movie: 
+    <span id='1' style="color:grey;">&starf;</span>
+    <span id='2' style="color:grey;">&starf;</span>
+    <span id='3' style="color:grey;">&starf;</span>
+    <span id='4' style="color:grey;">&starf;</span>
+    <span id='5' style="color:grey;">&starf;</span>
+    {% endif %}
+</div>
+<script>
+    star_status = []
+    {% if user.is_authenticated and user.user_reviews|dict_get:movie_id %}
+    for(let i = 1; i <= 5; i++) {
+        document.getElementById(`${i}`).onmouseover(starGold(i));
+        document.getElementById(`${i}`).onmouseover(starGrey(i));
+        document.getElementById(`${i}`).onclick()
+    }
+    {%endif%}
+    function starGold(element) {
+        // changes the color of the star to gold
+        for(let i = 1; i <= element; i++) {
+            document.getElementById(`${i}`).style.color = gold; 
+        }
+    }
+    function starGrey(element) {
+        // changes the color of the star to gold
+        for(let i = 1; i <= element; i++) {
+            document.getElementById(`${i}`).style.color = grey; 
+        }
+    }
+</script>
+{% endif %}
+
+{% endblock body %}

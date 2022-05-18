@@ -1,0 +1,171 @@
+{% extends 'interface/basic.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock css %}
+{% block body %}
+
+<body>
+    <h1>Recommended Action movies &starf; </h1>
+    <div class="movie-con" id='con1'>
+        <div class="prev">
+            <div class="adjuster">
+                <img src="{% static 'img/prev.svg' %}" alt="">
+            </div>
+        </div>
+        {% for movie in user_movies %}
+        {% if forloop.counter0|divisibleby:4 %}
+        <div class="movie-slide">
+        {% endif %}
+        
+        <div class="movie" id="{{movie.movie_id}}" onclick="location.href='movie/{{movie.movie_id}}'">
+            <div class="movie-img">
+                <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
+            </div>
+            <div class="movie-details" style="display: none;">
+                <h3 class="movie-title">{{movie.movie_title}}</h3>
+                <h6 class="movie-desc">{{movie.movie_desc}}</h6>
+            </div>
+        </div>
+        {% if forloop.counter0|add:1|divisibleby:4 %}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="movie-slide">
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img3.jpg' %}">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}">
+            </div>
+        </div>
+
+        <div class="next">
+            <div class="adjuster">
+                <img src="{% static 'img/next.svg' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <h1>Recommended Sci-fi Movies </h1>
+    <div class="movie-con" id='con2'>
+        <div class="prev">
+            <div class="adjuster">
+                <img src="{% static 'img/prev.svg' %}" alt="">
+            </div>
+        </div>
+        <div class="movie-slide">
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+        </div>
+        <div class="movie-slide">
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
+            </div>
+        </div>
+        <div class="next">
+            <div class="adjuster">
+                <img src="{% static 'img/next.svg' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <h1>Recommended Family Movies</h1>
+    <div class="movie-con" id='con3'>
+        <div class="prev">
+            <div class="adjuster">
+                <img src="{% static 'img/prev.svg' %}" alt="">
+            </div>
+        </div>
+        <div class="movie-slide">
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+        </div>
+        <div class="movie-slide">
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img1.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img2.jpg' %}" alt="nothing">
+            </div>
+            <div class="movie">
+                <img src="{% static 'img/img3.jpg' %}" alt="nothing">
+            </div>
+        </div>
+        <div class="next">
+            <div class="adjuster">
+                <img src="{% static 'img/next.svg' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <script>
+        carousels = document.getElementsByClassName('movie-con');
+        var obj = {};
+        for (i = 0; i < carousels.length; i++) {
+            obj[carousels[i].id] = [0, carousels[i].querySelectorAll(".movie-slide")];
+            obj[carousels[i].id][1][0].style.display = 'flex';
+        }
+        document.querySelectorAll('.prev').forEach(element => {
+            element.onclick = function () { prevFunction(element) };
+        });
+        function prevFunction(element) {
+            console.log("hello");
+            carouselinfo = obj[element.parentNode.id];
+            if (carouselinfo[0] == 0) return;
+            carouselinfo[0] -= 1;
+            carouselinfo[1][carouselinfo[0]].style.display = "flex";
+            carouselinfo[1][carouselinfo[0] + 1].style.display = "none";
+        }
+        document.querySelectorAll('.next').forEach(element => {
+            element.onclick = function () { nextFunction(element) };
+        });
+        function nextFunction(element) {
+            console.log("hello");
+            carouselinfo = obj[element.parentNode.id];
+            if (carouselinfo[0] == carouselinfo[1].length - 1) return;
+            carouselinfo[0] += 1;
+            carouselinfo[1][carouselinfo[0]].style.display = "flex";
+            carouselinfo[1][carouselinfo[0] - 1].style.display = "none";
+        }
+        // document.querySelectorAll('.next')
+
+    </script>
+</body>
+{% endblock body %}
