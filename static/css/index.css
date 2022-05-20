@@ -18,8 +18,8 @@
     cursor: pointer;
 }
 .movie-img{
-    width: 330px; 
-    height: 185px;
+    width: inherit; 
+    height: inherit;
 }
 .movie * img {
     object-fit: scale-down;
@@ -45,4 +45,15 @@
     height: 185px;
     display: flex;
     align-items: center;
+}
+
+.movie-details{
+    display: block; 
+    background-color: black; 
+    z-index: 2;    
+    color: blue; 
+}
+.movie-details *{
+    margin: 0; 
+    padding: 0;
 }

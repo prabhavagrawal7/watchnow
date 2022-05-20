@@ -60,7 +60,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-
+	z-index: 2;
 }
 
 .ctnt a {
@@ -147,3 +147,4 @@ input[type="email"] {
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
+}	

@@ -116,7 +116,7 @@ Genres movie list -> extracted from user genres if user logged in
 """
 
 
-def indexContent(Profile) -> dict():
+def indexContent(Profile=None) -> dict():
     contents = {}
     # show popular movies
     contents['Top movies'] = popularMovies(16)

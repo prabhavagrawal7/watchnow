@@ -1,0 +1,9 @@
+img {
+    position: absolute;
+    object-fit: scale-down;
+    width: 100%;
+    z-index:-1; 
+}
+.movie-rating{
+    font-size: large;
+}

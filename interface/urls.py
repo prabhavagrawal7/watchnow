@@ -22,5 +22,6 @@ urlpatterns = [
     path('logout/', views.userLogout, name='logout'),
     path('signup/', views.userSignup, name='signup'),
     path('movie/<int:movie_id>/', views.moviePage, name='moviepage'), 
+    path('userrated/', views.userrated, name='userrated'), 
     
 ]

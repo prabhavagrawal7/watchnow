@@ -1,10 +1,12 @@
 # Create your views here.
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Profile, Movies
 import dataapi.views as datafetch
+import json
 def index(request):
     # get the count vectorizer instance
     if request.user.is_authenticated:
@@ -17,7 +19,7 @@ def index(request):
 def userLogout(request):
     if request.user.is_authenticated:
         logout(request)
-        return render(request, 'interface/index.html')
+        return redirect('index')
 
 def userLogin(request): 
     if request.method == 'POST':
@@ -67,3 +69,9 @@ def moviePage(request, movie_id):
     except Movies.DoesNotExist:
         moviefound = False
     return render(request, 'interface/moviepage.html', {'moviefound': moviefound, 'movie': movie})
+
+def userrated(request): 
+    if request.method == 'POST':
+        print("hello")
+        return HttpResponse("""{"status" : "error"}""")
+    return HttpResponse("""{"status" : "error"}""")

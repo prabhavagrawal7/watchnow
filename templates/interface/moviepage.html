@@ -1,47 +1,68 @@
 {% extends 'interface/basic.html' %}
 {% load static %}
 {% load tags %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/moviepage.css' %}" type="text/css">
+{% endblock css %}
 {% block body %}
-{% if moviefound is None %}
-<h1>Sorry, this page doesn't exists !!!</h1>
-{% else %}
-<div class="left-align">
-    <img src="{% static 'img/img1.jpg' %}" alt="noimg">    
-</div>
-<div class="right-align">
-    <h1>{movie.movie_title}</h1>
-    <h2>Movie Rating: &#11088;{movie.movie_rating}</h2>
-    {% if user.is_authenticated %}
-    Rate Movie: 
-    <span id='1' style="color:grey;">&starf;</span>
-    <span id='2' style="color:grey;">&starf;</span>
-    <span id='3' style="color:grey;">&starf;</span>
-    <span id='4' style="color:grey;">&starf;</span>
-    <span id='5' style="color:grey;">&starf;</span>
-    {% endif %}
-</div>
-<script>
-    star_status = []
-    {% if user.is_authenticated and user.user_reviews|dict_get:movie_id %}
-    for(let i = 1; i <= 5; i++) {
-        document.getElementById(`${i}`).onmouseover(starGold(i));
-        document.getElementById(`${i}`).onmouseover(starGrey(i));
-        document.getElementById(`${i}`).onclick()
-    }
-    {%endif%}
-    function starGold(element) {
-        // changes the color of the star to gold
-        for(let i = 1; i <= element; i++) {
-            document.getElementById(`${i}`).style.color = gold; 
-        }
-    }
-    function starGrey(element) {
-        // changes the color of the star to gold
-        for(let i = 1; i <= element; i++) {
-            document.getElementById(`${i}`).style.color = grey; 
-        }
-    }
-</script>
-{% endif %}
 
+<body>
+    {% if moviefound is None %}
+    <h1>Sorry, this page doesn't exists !!!</h1>
+    {% else %}
+    <img src="https://image.tmdb.org/t/p/original/{{movie.movie_img}}" alt="img not found"/>
+    <h1 id={{movie.movie_id}}>"{{movie.movie_title}}"</h1>
+    <form id="rate-form" method="post"> {% csrf_token %}
+        <div class="movie-rating">
+            <h2>Movie Rating: {{movie.movie_rating}} &#11088;</h2>
+            {% if user.is_authenticated %}
+            Rate Movie:
+            <span id='1' style="color:grey;">&starf;</span>
+            <span id='2' style="color:grey;">&starf;</span>
+            <span id='3' style="color:grey;">&starf;</span>
+            <span id='4' style="color:grey;">&starf;</span>
+            <span id='5' style="color:grey;">&starf;</span>
+            {% endif %}
+        </div>
+        <input type="hidden" name="rating" id="rating">
+        <input type="submit" value="Rate movie"> 
+    </form>
+    {% endif %}
+    </div>
+</body>
 {% endblock body %}
+{% block js %}
+<script>
+$('span').hover(
+    function () {
+        for (i = 1; i <= this.id; i++) {
+            console.log(i);
+            $(`#${i}`).css('color', 'gold');
+        }
+    },
+    function () {
+        for (i = 1; i <= this.id; i++) {
+            $(`#${i}`).css('color', 'grey');
+        }
+    }
+)
+$('span').click(function () {
+    $('#rating').val(this.id); 
+    $('#rate-form').submit();
+})
+$('#rate-form').submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '/userrated',
+        data: {
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            'movie_id': $('h1')[0].id,
+            'rating': $('#rating').val(),
+        },
+        encode: true, 
+    })
+})
+</script>
+<script src="{% static 'js/moviepage.js' %}" type="text/javascript"></script>
+{% endblock js %}
