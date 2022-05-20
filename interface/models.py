@@ -8,6 +8,7 @@ class Movies(models.Model):
     movie_img = models.ImageField(upload_to='static/img', null=True)
     movie_desc = models.CharField(max_length=25000, null=True)
     movie_genres = models.JSONField()
+    
     def __str__(self):
         return self.movie_title
 

@@ -3,12 +3,14 @@
     background-color: blue;
     justify-content: center;
     margin-block: 1em; 
+    width: 100vw; 
 }
 
 .movie-slide {
     background-color: orange;
     display: none;
     margin-inline: 10px;
+    justify-content: center;
 }
 
 .movie {

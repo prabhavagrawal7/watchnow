@@ -1,9 +1,68 @@
-img {
-    position: absolute;
+.movie-con {
+    display: flex;
+    background-color: blue;
+    justify-content: center;
+    margin-block: 1em;
+}
+
+.movie-slide {
+    background-color: orange;
+    display: none;
+    margin-inline: 10px;
+}
+
+.movie {
+    width: 330px;
+    height: 185px;
+    margin-inline: 8px;
+    cursor: pointer;
+}
+
+.movie-img {
+    width: inherit;
+    height: inherit;
+}
+
+.movie * img {
     object-fit: scale-down;
     width: 100%;
-    z-index:-1; 
+    height: 100%;
 }
-.movie-rating{
-    font-size: large;
+
+.adjuster {
+    background-color: lightblue;
+    font-size: 2em;
+    margin-inline: -5px;
+}
+
+.prev {
+    background-color: black;
+    height: 185px;
+    display: flex;
+    align-items: center;
+}
+
+.next {
+    background-color: black;
+    height: 185px;
+    display: flex;
+    align-items: center;
+}
+
+.movie-details {
+    display: block;
+    background-color: black;
+    z-index: 2;
+    color: blue;
+}
+
+.movie-details * {
+    margin: 0;
+    padding: 0;
+}
+
+#backdrop-img{
+    position: absolute;
+    z-index: -1;
+    width: 100vw; 
 }

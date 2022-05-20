@@ -10,8 +10,8 @@
     {% if moviefound is None %}
     <h1>Sorry, this page doesn't exists !!!</h1>
     {% else %}
-    <img src="https://image.tmdb.org/t/p/original/{{movie.movie_img}}" alt="img not found"/>
-    <h1 id={{movie.movie_id}}>"{{movie.movie_title}}"</h1>
+    <img src="https://image.tmdb.org/t/p/original/{{movie.movie_img}}" alt="img not found" id = "backdrop-img"/>
+    <h1 id={{movie.movie_id}}>{{movie.movie_title}}</h1>
     <form id="rate-form" method="post"> {% csrf_token %}
         <div class="movie-rating">
             <h2>Movie Rating: {{movie.movie_rating}} &#11088;</h2>
@@ -29,10 +29,42 @@
     </form>
     {% endif %}
     </div>
+
+    <h1>Movies more like {{movie.movie_title}}</h1>
+    <div class="movie-con" id='Movies more like {{movie.movie_title}}'>
+        <div class="prev">
+            <div class="adjuster">
+                <img src="{% static 'img/prev.svg' %}" alt="">
+            </div>
+        </div>
+        {% for movie in similar_movies %}
+        {% if forloop.counter0|divisibleby:4 %}
+        <div class="movie-slide">
+        {% endif %}
+        
+        <div class="movie" id="{{movie.movie_id}}" onclick="location.href='/movie/{{movie.movie_id}}'">
+            <div class="movie-img">
+                <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
+            </div>
+            <div class="movie-details" style="display:none">
+                <h3 class="movie-title">{{movie.movie_title}}</h3>
+                <h6 class="movie-desc">{{movie.movie_desc}}</h6>
+            </div>
+        </div>
+        {% if forloop.counter0|add:1|divisibleby:4 %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="next">
+            <div class="adjuster">
+                <img src="{% static 'img/next.svg' %}" alt="">
+            </div>
+        </div>
+    </div>
 </body>
 {% endblock body %}
 {% block js %}
-<script>
+{% comment %} <script>
 $('span').hover(
     function () {
         for (i = 1; i <= this.id; i++) {
@@ -63,6 +95,48 @@ $('#rate-form').submit(function (e) {
         encode: true, 
     })
 })
+</script> {% endcomment %}
+<script>
+    // run js when dom loads
+$(() => {
+    var carousels = $('.movie-con')
+    var obj = {};
+    carousels.each(function (i, carousel) {
+        obj[carousel.id] = { "slide": 0, "slide_obj": $(carousel).children('.movie-slide') };
+        obj[carousel.id]['slide_obj'][0].style.display = 'flex';
+    });
+    carousels.each(function (i, carousel) {
+        $(carousel).children('.prev').on('click', function () {
+            console.log("hello");
+            carouselinfo = obj[carousel.id];
+            if (carouselinfo['slide'] == 0) return;
+            carouselinfo['slide'] -= 1;
+            carouselinfo['slide_obj'][carouselinfo['slide']].style.display = "flex";
+            carouselinfo['slide_obj'][carouselinfo['slide'] + 1].style.display = "none";
+        }),
+            $(carousel).children('.next').on('click', function () {
+                console.log("hello");
+                carouselinfo = obj[carousel.id];
+                if (carouselinfo['slide'] == carouselinfo['slide_obj'].length - 1) return;
+                carouselinfo['slide'] += 1;
+                carouselinfo['slide_obj'][carouselinfo['slide']].style.display = "flex";
+                carouselinfo['slide_obj'][carouselinfo['slide'] - 1].style.display = "none";
+            })
+    });
+    // $('.movie-details').slideUp();
+    console.log("function")
+    $('.movie').hover(
+        function () {
+            $(this).children('.movie-details').slideDown(); 
+            $(this).animate({ 'width': '363px', 'height': '203.5px'}, 200)
+        },
+        function () {
+            $(this).children('.movie-details').slideUp();
+            $(this).animate({ 'width': '330px', 'height': '185px'}, 200)
+        }
+    )
+});
+
 </script>
 <script src="{% static 'js/moviepage.js' %}" type="text/javascript"></script>
 {% endblock js %}

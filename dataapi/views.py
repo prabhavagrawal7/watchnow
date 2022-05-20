@@ -36,7 +36,7 @@ def createHash():
     global hash_loc
     hash_loc = dict()
     for i, movie_index in enumerate(movie_indexes):
-        hash_loc[movie_index] = i
+        hash_loc[str(movie_index)] = i
 
 
 def fetch_images(r):
@@ -85,8 +85,7 @@ def fetch_movie(movie_id):
 
 
 def moviePageAPI(movie):
-    if hash_loc is None:
-        createHash()
+    if hash_loc is None: createHash()
     movie_index = movie.movie_index
     movie_loc = hash_loc[movie_index]
     x_test = transformed_data[movie_loc]
@@ -114,6 +113,16 @@ ___________________________________________________________
 Popular movie list -> extracted from popularMovies
 Genres movie list -> extracted from user genres if user logged in
 """
+def fetchMovieOnMovie(movie): 
+    # getting transformed_data and using the data to extract the list of movies
+    global transformed_data, hash_loc, movie_indexes
+    if hash_loc is None: createHash()
+    trans_loc = hash_loc[movie.movie_id]
+    movie_data = transformed_data[trans_loc]
+    #using knn model to extract 20 movies 
+    movie_locs = model.kneighbors([movie_data])[1][0]
+    movie_locs = [fetch_movie(movie_indexes[i]) for i in movie_locs]
+    return movie_locs
 
 
 def indexContent(Profile=None) -> dict():

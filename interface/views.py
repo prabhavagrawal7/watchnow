@@ -11,7 +11,6 @@ def index(request):
     # get the count vectorizer instance
     if request.user.is_authenticated:
         user_movies = datafetch.indexContent(Profile.objects.get(user=request.user))
-        # (Movies.objects.get(movie_id='1'))
     else:
         user_movies = datafetch.indexContent()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
@@ -66,9 +65,10 @@ def moviePage(request, movie_id):
     try: 
         moviefound = True
         movie = Movies.objects.get(movie_id = movie_id)
+        similar_movies = datafetch.fetchMovieOnMovie(movie)
     except Movies.DoesNotExist:
         moviefound = False
-    return render(request, 'interface/moviepage.html', {'moviefound': moviefound, 'movie': movie})
+    return render(request, 'interface/moviepage.html', {'moviefound': moviefound, 'movie': movie, 'similar_movies': similar_movies})
 
 def userrated(request): 
     if request.method == 'POST':

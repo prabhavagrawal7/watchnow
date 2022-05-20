@@ -24,16 +24,14 @@ $(() => {
                 carouselinfo['slide_obj'][carouselinfo['slide'] - 1].style.display = "none";
             })
     });
-    // $('.movie-details').slideUp();
-    console.log("function")
     $('.movie').hover(
         function () {
-            $(this).children('.movie-details').slideDown(); 
-            $(this).animate({ 'width': '363px', 'height': '203.5px'})
+            $(this).children('.movie-details').slideDown(0); 
+            $(this).animate({ 'width': '363px', 'height': '203.5px'}, 0)
         },
         function () {
-            $(this).children('.movie-details').slideUp();
-            $(this).animate({ 'width': '330px', 'height': '185px' })
+            $(this).children('.movie-details').slideUp(0);
+            $(this).animate({ 'width': '330px', 'height': '185px' }, 0)
         }
     )
 });
