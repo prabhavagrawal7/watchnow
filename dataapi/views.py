@@ -70,6 +70,8 @@ def fetch_movie(movie_id):
     movie_img = fetch_images(r)
     movie_desc = r['overview']
     movie_genres = fetch_genres(movie_id)
+    movie_rating_count = int(r['vote_count'])
+    movie_rating_sum = (float(r['vote_average'])*movie_rating_count)
     # creating movie object and saving in database
     movie = Movies(
         movie_id=movie_id,
@@ -77,10 +79,13 @@ def fetch_movie(movie_id):
         movie_img=movie_img,
         movie_desc=movie_desc,
         movie_genres=movie_genres,
+        movie_rating_sum=movie_rating_sum,
+        movie_rating_count=movie_rating_count,
     )
     movie.save()
     movie_obj = Movies.objects.get(movie_id=movie_id)
     movie_obj.save()
+
 
 def fetch_movies(movie_id_list):
     movie_id_not_found = [movie_id for movie_id in movie_id_list if not Movies.objects.filter(
@@ -121,25 +126,17 @@ def fetchMovieOnMovie(movie):
     return fetch_movies(movie_id_list)
 
 
-def indexContent(Profile=None) -> dict():
-    contents = {}
+def indexContent(Profile=None) -> list():
+    contents = []
     # show popular movies
-    contents['Top movies'] = popularMovies(16)
+    contents.append(('Top movies', popularMovies(16)))
     global all_genres
-    if Profile is None or Profile.user_reviews.get('genres_points') is None:
-
-        # show genres popular movies
-        for genres in sorted(all_genres)[:6]:
-            contents[f"Popular {genres} movies"] = fetchMovieOnGenres(genres)
-    else:
-        # genres_points will be in the dictionary format
-        genre_list = list(Profile.user_reviews['genres_points'])
-        genre_list = sorted(genre_list, key=lambda x: x[1], reverse=True)[:6]
-        for genres, genre_liking in genre_list:
-            contents[f'Popular {genres} movies'] = fetchMovieOnGenres(genres)
+    if Profile is not None:
+        pass
+    for genres in sorted(all_genres):
+        contents.append((f"Popular {genres} movies",
+                        fetchMovieOnGenres(genres)))
     return contents
-
-# developer functions
 
 
 def popularMovies(listing=100):

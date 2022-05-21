@@ -8,11 +8,14 @@ class Movies(models.Model):
     movie_img = models.ImageField(upload_to='static/img', null=True)
     movie_desc = models.CharField(max_length=25000, null=True)
     movie_genres = models.JSONField()
-    
+    movie_rating_count = models.IntegerField(default=0)
+    movie_rating_sum = models.IntegerField(default=0)
     def __str__(self):
         return self.movie_title
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_reviews = models.JSONField()
+    user_ratings = models.JSONField()
 
+    def __str__(self):
+        return self.user.username

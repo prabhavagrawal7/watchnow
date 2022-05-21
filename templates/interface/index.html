@@ -6,7 +6,7 @@
 {% block body %}
 
 <body>
-    {% for category_name, category_movies in user_movies.items %}
+    {% for category_name, category_movies in user_movies %}
     <h1>{{category_name}}</h1>
     <div class="movie-con" id='{{category_name}}'>
         <div class="prev">
