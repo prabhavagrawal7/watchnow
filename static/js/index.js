@@ -26,12 +26,12 @@ $(() => {
     });
     $('.movie').hover(
         function () {
-            $(this).children('.movie-details').slideDown(0); 
-            $(this).animate({ 'width': '363px', 'height': '203.5px'}, 0)
+            $(this).children('.movie-details').slideDown(); 
+            $(this).animate({ 'width': '363px', 'height': '203.5px'}, 200)
         },
         function () {
-            $(this).children('.movie-details').slideUp(0);
-            $(this).animate({ 'width': '330px', 'height': '185px' }, 0)
+            $(this).children('.movie-details').slideUp();
+            $(this).animate({ 'width': '330px', 'height': '185px' }, 200)
         }
     )
 });

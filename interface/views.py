@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Profile, Movies
 import dataapi.views as datafetch
-import json
+import threading
 def index(request):
     # get the count vectorizer instance
     if request.user.is_authenticated:
@@ -65,7 +65,7 @@ def moviePage(request, movie_id):
     try: 
         moviefound = True
         movie = Movies.objects.get(movie_id = movie_id)
-        similar_movies = datafetch.fetchMovieOnMovie(movie)
+        similar_movies = datafetch.fetchMovieOnMovie(movie) 
     except Movies.DoesNotExist:
         moviefound = False
     return render(request, 'interface/moviepage.html', {'moviefound': moviefound, 'movie': movie, 'similar_movies': similar_movies})

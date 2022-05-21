@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from interface.models import Movies
 import requests
-
+from concurrent.futures import ThreadPoolExecutor
 # Create your views here.
 """
 Saving features using joblib
@@ -59,52 +59,45 @@ def fetch_genres(movie_id):
     # return a list of genres sep. by |
     return genres_string.split('|')
 
+# developer functions
+
 
 def fetch_movie(movie_id):
-    try:
-        movie_obj = Movies.objects.get(movie_id=movie_id)
-    except Movies.DoesNotExist:
-        tmdb_id = links.loc[movie_id]['tmdbId']
-        url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={API_KEY}"
-        r = requests.get(url).json()
-        movie_title = r['original_title']
-        movie_img = fetch_images(r)
-        movie_desc = r['overview']
-        movie_genres = fetch_genres(movie_id)
-        # creating movie object and saving in database
-        movie = Movies(
-            movie_id=movie_id,
-            movie_title=movie_title,
-            movie_img=movie_img,
-            movie_desc=movie_desc,
-            movie_genres=movie_genres,
-        )
-        movie.save()
-        movie_obj = Movies.objects.get(movie_id=movie_id)
-    return movie_obj
+    tmdb_id = links.loc[movie_id]['tmdbId']
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={API_KEY}"
+    r = requests.get(url).json()
+    movie_title = r['original_title']
+    movie_img = fetch_images(r)
+    movie_desc = r['overview']
+    movie_genres = fetch_genres(movie_id)
+    # creating movie object and saving in database
+    movie = Movies(
+        movie_id=movie_id,
+        movie_title=movie_title,
+        movie_img=movie_img,
+        movie_desc=movie_desc,
+        movie_genres=movie_genres,
+    )
+    movie.save()
+    movie_obj = Movies.objects.get(movie_id=movie_id)
+    movie_obj.save()
 
-
-def moviePageAPI(movie):
-    if hash_loc is None: createHash()
-    movie_index = movie.movie_index
-    movie_loc = hash_loc[movie_index]
-    x_test = transformed_data[movie_loc]
-    neighbour_locs = model.kneighbors(x_test)[1][0]
-    movie_list = []
-    # Directly providing movies from vector location
-    for loc in neighbour_locs:
-        movie = fetch_movie(hash_loc[loc])
-        movie_list.append(movie)
-    return movie_list
+def fetch_movies(movie_id_list):
+    movie_id_not_found = [movie_id for movie_id in movie_id_list if not Movies.objects.filter(
+        movie_id=movie_id).exists()]
+    with ThreadPoolExecutor(max_workers=len(movie_id_list)//2+1) as executor:
+        with requests.Session() as session:
+            executor.map(fetch_movie, movie_id_not_found)
+            executor.shutdown(wait=True)
+    return [Movies.objects.get(movie_id=movie_id) for movie_id in movie_id_list]
 
 
 def fetchMovieOnGenres(genres):
     # fetching by genres, sorting by popularity
     global genres_dict
-    movies = []
-    for movie_id in genres_dict[genres][:12]:
-        movies.append(fetch_movie(movie_id))
-    return movies
+    movie_id_list = genres_dict[genres][:16]
+    return fetch_movies(movie_id_list)
+
 
 """
 The whole logical content of the index page or the front page. 
@@ -113,16 +106,19 @@ ___________________________________________________________
 Popular movie list -> extracted from popularMovies
 Genres movie list -> extracted from user genres if user logged in
 """
-def fetchMovieOnMovie(movie): 
+
+
+def fetchMovieOnMovie(movie):
     # getting transformed_data and using the data to extract the list of movies
     global transformed_data, hash_loc, movie_indexes
-    if hash_loc is None: createHash()
+    if hash_loc is None:
+        createHash()
     trans_loc = hash_loc[movie.movie_id]
     movie_data = transformed_data[trans_loc]
-    #using knn model to extract 20 movies 
+    # using knn model to extract 20 movies
     movie_locs = model.kneighbors([movie_data])[1][0]
-    movie_locs = [fetch_movie(movie_indexes[i]) for i in movie_locs]
-    return movie_locs
+    movie_id_list = [movie_indexes[locs] for locs in movie_locs]
+    return fetch_movies(movie_id_list)
 
 
 def indexContent(Profile=None) -> dict():
@@ -134,7 +130,7 @@ def indexContent(Profile=None) -> dict():
 
         # show genres popular movies
         for genres in sorted(all_genres)[:6]:
-            contents[f"Popular {genres} movies"] = (fetchMovieOnGenres(genres))
+            contents[f"Popular {genres} movies"] = fetchMovieOnGenres(genres)
     else:
         # genres_points will be in the dictionary format
         genre_list = list(Profile.user_reviews['genres_points'])
@@ -143,9 +139,11 @@ def indexContent(Profile=None) -> dict():
             contents[f'Popular {genres} movies'] = fetchMovieOnGenres(genres)
     return contents
 
+# developer functions
+
 
 def popularMovies(listing=100):
     movie_list = []
     for movie_id in popular_movie_list[:listing]:
-        movie_list.append(fetch_movie(movie_id))
-    return movie_list
+        movie_list.append(movie_id)
+    return fetch_movies(movie_list)
