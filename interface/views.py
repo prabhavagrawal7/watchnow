@@ -70,21 +70,24 @@ def userSignup(request):
 
 
 def moviePage(request, movie_id):
-    user_rating = None
+    user_rated = None
     try:
         moviefound = True
         movie = Movies.objects.get(movie_id=movie_id)
         similar_movies = datafetch.fetchMovieOnMovie(movie)
         if request.user.is_authenticated:
             user = Profile.objects.get(user=request.user)
-            user_rating = user.user_ratings['movie_to_ratings'].get(movie_id)
+            user_rated = user.user_ratings['movies_to_ratings'].get(movie_id)
     except Movies.DoesNotExist:
         moviefound = False
     return render(request, 'interface/moviepage.html',
-                  {'moviefound': moviefound,
-                   'movie': movie,
-                   'similar_movies': similar_movies, 
-                   'user_rating': user_rating,})
+                    {
+                        'moviefound': moviefound,
+                        'movie': movie,
+                        'similar_movies': similar_movies,
+                        'user_rated': user_rated,
+                        'movie_rating': round(movie.movie_rating_sum/movie.movie_rating_count, 2), 
+                    })
 
 
 def userrated(request, movie_id):
@@ -110,3 +113,4 @@ def userrated(request, movie_id):
             ratings_to_movie[movie_rating] = [movie_id]
         profile.save()
         return redirect(f'/movie/{movie_id}')
+

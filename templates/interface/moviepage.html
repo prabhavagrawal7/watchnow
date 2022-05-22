@@ -16,18 +16,15 @@
         <input type="hidden" name="rating" id = "rating">
     </form>
     <div class="movie-rating">  
-            <h2>Movie Rating: {{movie.movie_mrating}} &#11088;</h2>
+            <h2>Movie Rating: {{movie_rating}} &#11088;</h2>
             {% if user.is_authenticated %}
-            Rate Movie:
-            <span id='1' style="color:grey;">&starf;</span>
-            <span id='2' style="color:grey;">&starf;</span>
-            <span id='3' style="color:grey;">&starf;</span>
-            <span id='4' style="color:grey;">&starf;</span>
-            <span id='5' style="color:grey;">&starf;</span>
+            <span id='1-star' style="color:grey;">&starf;</span>
+            <span id='2-star' style="color:grey;">&starf;</span>
+            <span id='3-star' style="color:grey;">&starf;</span>
+            <span id='4-star' style="color:grey;">&starf;</span>
+            <span id='5-star' style="color:grey;">&starf;</span>
             {% endif %}
         </div>
-        <input type="hidden" name="rating" id="rating">
-        <input type="submit" value="Rate movie"> 
     {% endif %}
     </div>
 
@@ -66,21 +63,23 @@
 {% endblock body %}
 {% block js %}
  <script>
+for (i = 1; i <= {{user_rated|default_if_none:0}}; i++) {
+    $(`#${i}-star`).css('color', 'gold');
+}
 $('span').hover(
     function () {
-        for (i = 1; i <= this.id; i++) {
-            console.log(i);
-            $(`#${i}`).css('color', 'gold');
+        for (i = 1; i <= this.id.split("-")[0]; i++) {
+            $(`#${i}-star`).css('color', 'gold');
         }
     },
     function () {
-        for (i = 1; i <= this.id; i++) {
-            $(`#${i}`).css('color', 'grey');
+        for (i = {{user_rated|default_if_none:0}}+1; i <= this.id.split("-")[0]; i++) {
+            $(`#${i}-star`).css('color', 'grey');
         }
     }
 )
 $('span').click(function () {
-    $('#rating').val(this.id); 
+    $('#rating').val(this.id.split("-")[0]); 
     $('#rate-form').submit();
 })
 

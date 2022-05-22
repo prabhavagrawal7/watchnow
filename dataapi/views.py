@@ -121,18 +121,46 @@ def fetchMovieOnMovie(movie):
     trans_loc = hash_loc[movie.movie_id]
     movie_data = transformed_data[trans_loc]
     # using knn model to extract 20 movies
-    movie_locs = model.kneighbors([movie_data])[1][0]
+    movie_locs = model.kneighbors([movie_data])[1][0][1:21]
     movie_id_list = [movie_indexes[locs] for locs in movie_locs]
     return fetch_movies(movie_id_list)
 
 
-def indexContent(Profile=None) -> list():
+def profile_movies(profile, movie_count=3):
+    # returns movie_count (3) number of movie carousels
+    ratings_to_movies = profile.user_ratings['ratings_to_movies']
+    movie_id_list = []
+    if ratings_to_movies.get('5') is not None:
+        movie_id_list += ratings_to_movies.get('5')[::-1]
+    if len(movie_id_list) > movie_count and ratings_to_movies.get('4') is not None: 
+        movie_id_list += ratings_to_movies.get('4')[::-1]
+    if len(movie_id_list) > movie_count and ratings_to_movies.get('3') is not None:
+        movie_id_list += ratings_to_movies.get('3')[::-1]
+    movie_id_list = movie_id_list[:movie_count]
+    list_from_profile = []
+    for movie_id in movie_id_list:
+        movie = Movies.objects.get(movie_id=movie_id)
+        list_from_profile.append((movie, fetchMovieOnMovie(movie)))
+
+    return list_from_profile
+
+
+def indexContent(profile=None) -> list():
+    """
+    Returns front page content for a given profile if user is logged in
+    Otherwise returns list of default movie content.
+    """
     contents = []
     # show popular movies
     contents.append(('Top movies', popularMovies(16)))
     global all_genres
-    if Profile is not None:
-        pass
+    if profile is not None:
+        movies_based_on_profile = profile_movies(profile)
+        for movie_lists in movies_based_on_profile: 
+            # movie_lists type will contain typle(movie, [movie_list])
+            contents.append(
+                (f"Because you liked {movie_lists[0].movie_title}", movie_lists[1]) )
+        
     for genres in sorted(all_genres):
         contents.append((f"Popular {genres} movies",
                         fetchMovieOnGenres(genres)))
