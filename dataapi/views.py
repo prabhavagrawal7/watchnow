@@ -15,21 +15,11 @@ Saving features using joblib
 model, transformed_data, movie_indexes = load(
     './dataapi/data/required_contents.joblib')
 links = pd.read_csv('./dataapi/data/links.csv', index_col=['movieId'])
-movie_genres = pd.read_csv('./dataapi/data/movies.csv', index_col=['movieId'])
 hash_loc = None
-API_KEY = "62c56bbac67642762ecb788540b5888e"
-"""
-    movie_id = models.CharField(max_length=100, primary_key=True)
-    movie_title = models.CharField(max_length=100, null=True)
-    movie_img = models.ImageField(upload_to='static/img', null=True)
-    movie_desc = models.CharField(max_length=25000, null=True)
-    movie_genres = models.JSONField()
-    def __name__(self):
-        return self.movie_title
-"""
 popular_movie_list = load('./dataapi/data/popular_movies.joblib')
 all_genres = pd.read_csv('./dataapi/data/all_genres.csv')['genres']
 genres_dict = load('./dataapi/data/genres_dict.joblib')
+API_KEY = "62c56bbac67642762ecb788540b5888e"
 
 
 def createHash():
@@ -54,14 +44,6 @@ def fetch_images(r):
     return movie_img
 
 
-def fetch_genres(movie_id):
-    genres_string = movie_genres.loc[movie_id]['genres']
-    # return a list of genres sep. by |
-    return genres_string.split('|')
-
-# developer functions
-
-
 def fetch_movie(movie_id):
     tmdb_id = links.loc[movie_id]['tmdbId']
     url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={API_KEY}"
@@ -69,7 +51,7 @@ def fetch_movie(movie_id):
     movie_title = r['original_title']
     movie_img = fetch_images(r)
     movie_desc = r['overview']
-    movie_genres = fetch_genres(movie_id)
+    movie_genres = [genre['name'] for genre in r['genres']]
     movie_rating_count = int(r['vote_count'])
     movie_rating_sum = (float(r['vote_average'])*movie_rating_count)
     # creating movie object and saving in database
@@ -90,17 +72,17 @@ def fetch_movie(movie_id):
 def fetch_movies(movie_id_list):
     movie_id_not_found = [movie_id for movie_id in movie_id_list if not Movies.objects.filter(
         movie_id=movie_id).exists()]
-    with ThreadPoolExecutor(max_workers=len(movie_id_list)//2+1) as executor:
+    with ThreadPoolExecutor(max_workers=len(movie_id_list)+1) as executor:
         with requests.Session() as session:
             executor.map(fetch_movie, movie_id_not_found)
             executor.shutdown(wait=True)
     return [Movies.objects.get(movie_id=movie_id) for movie_id in movie_id_list]
 
 
-def fetchMovieOnGenres(genres):
+def fetch_movies_on_genre(genre):
     # fetching by genres, sorting by popularity
     global genres_dict
-    movie_id_list = genres_dict[genres][:16]
+    movie_id_list = genres_dict[genre][:16]
     return fetch_movies(movie_id_list)
 
 
@@ -130,16 +112,14 @@ def profile_movies(profile, movie_count=3):
     # returns movie_count (3) number of movie carousels
     ratings_to_movies = profile.user_ratings['ratings_to_movies']
     movie_id_list = []
-    if ratings_to_movies.get('5') is not None:
-        movie_id_list += ratings_to_movies.get('5')[::-1]
-    if len(movie_id_list) > movie_count and ratings_to_movies.get('4') is not None: 
-        movie_id_list += ratings_to_movies.get('4')[::-1]
-    if len(movie_id_list) > movie_count and ratings_to_movies.get('3') is not None:
-        movie_id_list += ratings_to_movies.get('3')[::-1]
+    for rating in range(5, 2, -1):
+        rating = str(rating)
+        if len(movie_id_list) < movie_count and ratings_to_movies.get(rating) is not None:
+            movie_id_list += ratings_to_movies.get(rating)[::-1]
     movie_id_list = movie_id_list[:movie_count]
+    movie_list = fetch_movies(movie_id_list)
     list_from_profile = []
-    for movie_id in movie_id_list:
-        movie = Movies.objects.get(movie_id=movie_id)
+    for movie in movie_list:
         list_from_profile.append((movie, fetchMovieOnMovie(movie)))
 
     return list_from_profile
@@ -152,18 +132,19 @@ def indexContent(profile=None) -> list():
     """
     contents = []
     # show popular movies
+
     contents.append(('Top movies', popularMovies(16)))
     global all_genres
     if profile is not None:
         movies_based_on_profile = profile_movies(profile)
-        for movie_lists in movies_based_on_profile: 
+        for movie_lists in movies_based_on_profile:
             # movie_lists type will contain typle(movie, [movie_list])
             contents.append(
-                (f"Because you liked {movie_lists[0].movie_title}", movie_lists[1]) )
-        
+                (f"Because you liked {movie_lists[0].movie_title}", movie_lists[1]))
+
     for genres in sorted(all_genres):
         contents.append((f"Popular {genres} movies",
-                        fetchMovieOnGenres(genres)))
+                        fetch_movies_on_genre(genres)))
     return contents
 
 
