@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="{% static 'css/basic.css' %}" />
     <title>WatchNow</title>
-     <!-- jquery cdn here -->
-     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"> </script>
-    {% block css %}
-    {% endblock css %}
+    <!-- jquery cdn here -->
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"> </script>
+    {% block css %}{% endblock css %}
 </head>
 
 <body>
@@ -22,42 +22,45 @@
             <a class="nav-inner" href="/contact">Contact Us</a>
         </div>
         <div class="right-side">
-            <form action="/search" method="post" class="nav-search"> {% csrf_token %}
+            <form action="/search/" method="POST" class="nav-search"> {% csrf_token %}
                 <input type="text" name="query" placeholder="Search">
-                <button type="submit" class="button-primary">Search</button>
+                <button type="submit" class="button-dark">Search</button>
             </form>
             {% if user.is_authenticated %}
             <div class="nav-acc-ddown">
-                <div class="acc-ddown button-primary">{{ user.first_name }} &#x25BC;</div>
+                <div class="acc-ddown button-dark">{{ user.first_name }} <span class="user-dropdown-icon">&#9662;</span>
+                </div>
                 <div class="ctnt">
                     <a href="/editprofile">Account Overview</a>
                     <a href="/logout">Logout</a>
                 </div>
             </div>
             {% else %}
-            <a class="button-primary modal-open" id="login">Login</a>
-            <a class="button-primary modal-open" id="signup">Sign Up </a>
+            <a class="button-dark modal-open" id="login">Login</a>
+            <a class="button-dark modal-open" id="signup">Sign Up </a>
             {% endif %}
         </div>
     </div>
     {% for message in messages %}
-	<div class="alert blog-alert blog-alert-{{message.tags}} alert-dismissible fade show" id="alert-account"
-		role="alert">
-		{{ message|safe }}
-		<span class="btn btn-close" data-bs-dismiss="alert" aria-label="Close" style="float: right;"></span>
-	</div>
-	{% endfor %}
+    <div class="alert blog-alert blog-alert-{{message.tags}} alert-dismissible fade show" id="alert-account"
+        role="alert">
+        {{ message|safe }}
+        <span class="btn btn-close" data-bs-dismiss="alert" aria-label="Close" style="float: right;"></span>
+    </div>
+    {% endfor %}
     {% if not user.is_authenticated %}
     <div id="login-modal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close-login close">&times;</span>
+            <div class="suspended-close">
+                <div class="close-login close">&times;</div>
+            </div>
             <form action="/login/" method="post"> {% csrf_token %}
                 <label for="username">Username:</label>
                 <input type="text" name="username">
                 <label for="password" name="password">Password:</label>
                 <input type="password" name="password">
-                <button type="submit" class="button-primary">Login</button>
+                <button type="submit" class="button-dark">Login</button>
             </form>
         </div>
     </div>
@@ -78,7 +81,7 @@
                 <input type="password" name="password2">
                 <label for="email">Email Id:</label>
                 <input type="email" name="email">
-                <button type="submit" class="button-primary">Sign Up</button>
+                <button type="submit" class="button-dark">Sign Up</button>
             </form>
         </div>
     </div>

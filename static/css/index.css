@@ -1,28 +1,38 @@
+.category-name {
+    margin: 0;
+    padding: 0;
+
+}
+
 .movie-con {
     display: flex;
-    background-color: blue;
+    /* background-color: blue; */
     justify-content: center;
-    margin-block: 1em; 
-    width: 100vw; 
+    margin-bottom: 1em;
+    width: 100vw;
 }
 
 .movie-slide {
-    background-color: orange;
+    /* background-color: orange; */
     display: none;
     margin-inline: 10px;
     justify-content: center;
+    text-decoration: none;
 }
 
 .movie {
     width: 330px;
     height: 185px;
-    margin-inline: 8px;
-    cursor: pointer;
+    margin-inline: 7px;
+    cursor: default;
 }
-.movie-img{
-    width: inherit; 
+
+.movie-img {
+    width: inherit;
     height: inherit;
+    margin: 0; 
 }
+
 .movie * img {
     object-fit: scale-down;
     width: 100%;
@@ -30,32 +40,37 @@
 }
 
 .adjuster {
-    background-color: lightblue;
     font-size: 2em;
-    margin-inline: -5px; 
+    margin-inline: -5px;
 }
 
 .prev {
-    background-color: black;
     height: 185px;
     display: flex;
     align-items: center;
 }
 
 .next {
-    background-color: black;
     height: 185px;
     display: flex;
     align-items: center;
 }
 
-.movie-details{
-    display: block; 
-    background-color: black; 
-    z-index: 2;    
-    color: blue; 
+.movie-details {
+    display: block;
+    position: relative;
+    background-color: black;
+    z-index: 3;
+    padding-inline: 10px;
+    padding-block: 10px;
 }
-.movie-details *{
-    margin: 0; 
+
+.movie-details * {
+    margin: 0;
     padding: 0;
+}
+
+.movie-title {
+    margin-bottom: 10px;
+    font-weight: 100; 
 }

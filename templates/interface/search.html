@@ -1,0 +1,88 @@
+{% extends 'interface/basic.html' %}
+{% block css %}
+<style>
+    .query-results {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: normal;
+        align-items: stretch;
+        align-content: stretch;
+    }
+
+    .movie-slide {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: normal;
+        align-items: normal;
+        align-content: normal;
+        width: 100%;
+    }
+
+    .movie {
+        width: 330px;
+        height: 185px;
+        margin-inline: 8px;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: normal;
+        align-items: normal;
+        align-content: normal;
+        margin-bottom: 10px;
+    }
+
+    .movie-img {
+        display: inline-block;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: auto;
+        align-self: auto;
+        order: 0;
+        width: 30%;
+        height: 100%; 
+    }
+
+    img {
+        object-fit: scale-down;
+        height: 100%;
+    }
+
+    .movie-details {
+        display: block;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: auto;
+        align-self: auto;
+        order: 0;
+        word-wrap: break-word;
+        width: 70%; 
+    }
+</style>
+{% endblock css %}
+{% block body %}
+
+<body>
+    <div class="query-results">
+        {% for movie in movies %}
+        {% if forloop.counter0|divisibleby:4 %}
+        {% endif %}
+        <div class="movie" id="{{movie.movie_id}}" onclick="location.href='/movie/{{movie.movie_id}}'">
+            <div class="movie-img">
+                <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
+            </div>
+            <div class="movie-details">
+                {% comment %} style="display:block" {% endcomment %}
+                <h3 class="movie-title">{{movie.movie_title}}</h3>
+                <h6 class="movie-desc">{{movie.movie_desc}}</h6>
+            </div>
+        </div>
+        {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+{% endblock body %}

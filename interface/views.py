@@ -17,6 +17,13 @@ def index(request):
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
 
+def search(request):
+    if request.method == 'POST':
+        query = request.POST.get('query')
+        movies = Movies.objects.filter(movie_title__icontains=query)
+        return render(request, 'interface/search.html', {'movies': movies})
+
+
 def userLogout(request):
     if request.user.is_authenticated:
         logout(request)
@@ -81,13 +88,13 @@ def moviePage(request, movie_id):
     except Movies.DoesNotExist:
         moviefound = False
     return render(request, 'interface/moviepage.html',
-                    {
-                        'moviefound': moviefound,
-                        'movie': movie,
-                        'similar_movies': similar_movies,
-                        'user_rated': user_rated,
-                        'movie_rating': round(movie.movie_rating_sum/movie.movie_rating_count, 2), 
-                    })
+                  {
+                      'moviefound': moviefound,
+                      'movie': movie,
+                      'similar_movies': similar_movies,
+                      'user_rated': user_rated,
+                      'movie_rating': round(movie.movie_rating_sum/movie.movie_rating_count, 2),
+                  })
 
 
 def userrated(request, movie_id):
@@ -113,4 +120,3 @@ def userrated(request, movie_id):
             ratings_to_movie[movie_rating] = [movie_id]
         profile.save()
         return redirect(f'/movie/{movie_id}')
-

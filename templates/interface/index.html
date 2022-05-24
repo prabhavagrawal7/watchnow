@@ -7,7 +7,7 @@
 
 <body>
     {% for category_name, category_movies in user_movies %}
-    <h1>{{category_name}}</h1>
+    <div class="category-name">{{category_name}}</div>
     <div class="movie-con" id='{{category_name}}'>
         <div class="prev">
             <div class="adjuster">
@@ -19,13 +19,14 @@
         <div class="movie-slide">
         {% endif %}
         
-        <div class="movie" id="{{movie.movie_id}}" onclick="location.href='movie/{{movie.movie_id}}'">
-            <div class="movie-img">
+        <div class="movie" id="{{movie.movie_id}}">
+            <a class="movie-img" href = "/movie/{{movie.movie_id}}">
                 <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
-            </div>
-            <div class="movie-details" style="display:none">
-                <h3 class="movie-title">{{movie.movie_title}}</h3>
-                <h6 class="movie-desc">{{movie.movie_desc}}</h6>
+            </a>
+            {% comment %} <div class="movie-details" style="display:none"> {% endcomment %}
+            <div class="movie-details">
+                <div class="movie-title">{{movie.movie_title}}</div>
+                <div class="movie-desc">{{movie.movie_desc|truncatechars:150}}</div>
             </div>
         </div>
         {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}

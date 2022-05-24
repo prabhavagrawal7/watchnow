@@ -21,6 +21,7 @@ urlpatterns = [
     path('login/', views.userLogin, name='login'),
     path('logout/', views.userLogout, name='logout'),
     path('signup/', views.userSignup, name='signup'),
+    path('search/', views.search, name='search'),
     path('movie/<slug:movie_id>/', views.moviePage, name='moviepage'), 
     path('userrated/<slug:movie_id>', views.userrated, name='userrated'), 
     
