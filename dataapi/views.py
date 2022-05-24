@@ -1,10 +1,8 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from joblib import load
 import numpy as np
 import pandas as pd
 from interface.models import Movies
-import requests
-from concurrent.futures import ThreadPoolExecutor
 # Create your views here.
 """
 Saving features using joblib
@@ -12,15 +10,12 @@ Saving features using joblib
 5. transformed_data
 6. movie_index
 """
-model, transformed_data, movie_indexes = load(
-    './dataapi/data/required_contents.joblib')
-links = pd.read_csv('./dataapi/data/links.csv', index_col=['movieId'])
+model, transformed_data, movie_indexes = load('./dataapi/movie_dataset/required_contents.joblib')
 hash_loc = None
-popular_movie_list = load('./dataapi/data/popular_movies.joblib')
-all_genres = pd.read_csv('./dataapi/data/all_genres.csv')['genres']
-genres_dict = load('./dataapi/data/genres_dict.joblib')
-API_KEY = "62c56bbac67642762ecb788540b5888e"
-
+popular_movie_list = load('./dataapi/movie_dataset/popular_movies_list.joblib')
+all_genres = load('./dataapi/movie_dataset/all_genres.joblib')
+# all_genres = pd.read_csv('./dataapi/movie_dataset/all_genres.csv')
+genres_dict = {}
 
 def createHash():
     global hash_loc
@@ -29,62 +24,21 @@ def createHash():
         hash_loc[str(movie_index)] = i
 
 
-def fetch_images(r):
-    try:
-        movie_img = r['backdrop_path']
-        if movie_img is None:
-            raise Exception("Movie image not found")
-    except:
-        try:
-            movie_img = r['poster_path']
-        except:
-            movie_img = None
-    if movie_img is None:
-        movie_img = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-    return movie_img
-
-
-def fetch_movie(movie_id):
-    tmdb_id = links.loc[movie_id]['tmdbId']
-    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={API_KEY}"
-    r = requests.get(url).json()
-    movie_title = r['original_title']
-    movie_img = fetch_images(r)
-    movie_desc = r['overview']
-    movie_genres = [genre['name'] for genre in r['genres']]
-    movie_rating_count = int(r['vote_count'])
-    movie_rating_sum = (float(r['vote_average'])*movie_rating_count)
-    # creating movie object and saving in database
-    movie = Movies(
-        movie_id=movie_id,
-        movie_title=movie_title,
-        movie_img=movie_img,
-        movie_desc=movie_desc,
-        movie_genres=movie_genres,
-        movie_rating_sum=movie_rating_sum,
-        movie_rating_count=movie_rating_count,
-    )
-    movie.save()
-    movie_obj = Movies.objects.get(movie_id=movie_id)
-    movie_obj.save()
-
-
 def fetch_movies(movie_id_list):
-    movie_id_not_found = [movie_id for movie_id in movie_id_list if not Movies.objects.filter(
-        movie_id=movie_id).exists()]
-    with ThreadPoolExecutor(max_workers=len(movie_id_list)+1) as executor:
-        with requests.Session() as session:
-            executor.map(fetch_movie, movie_id_not_found)
-            executor.shutdown(wait=True)
     return [Movies.objects.get(movie_id=movie_id) for movie_id in movie_id_list]
 
 
 def fetch_movies_on_genre(genre):
-    # fetching by genres, sorting by popularity
     global genres_dict
-    movie_id_list = genres_dict[genre][:16]
-    return fetch_movies(movie_id_list)
-
+    if genres_dict.get(genre) is not None: 
+        return genres_dict[genre]
+    # fetching by genres, sorting by popularity
+    movies = Movies.objects.filter(movie_genres__icontains=genre).order_by('-movie_rating_sum')
+    nmovies = []
+    for i in movies:
+        nmovies.append(i)
+    genres_dict[genre] = nmovies[:16]
+    return genres_dict[genre]
 
 """
 The whole logical content of the index page or the front page. 
@@ -108,7 +62,7 @@ def fetchMovieOnMovie(movie):
     return fetch_movies(movie_id_list)
 
 
-def profile_movies(profile, movie_count=3):
+def profile_movies(profile, movie_count=4):
     # returns movie_count (3) number of movie carousels
     ratings_to_movies = profile.user_ratings['ratings_to_movies']
     movie_id_list = []
@@ -121,7 +75,6 @@ def profile_movies(profile, movie_count=3):
     list_from_profile = []
     for movie in movie_list:
         list_from_profile.append((movie, fetchMovieOnMovie(movie)))
-
     return list_from_profile
 
 
@@ -135,6 +88,7 @@ def indexContent(profile=None) -> list():
 
     contents.append(('Top movies', popularMovies(16)))
     global all_genres
+    print(all_genres)
     if profile is not None:
         movies_based_on_profile = profile_movies(profile)
         for movie_lists in movies_based_on_profile:
