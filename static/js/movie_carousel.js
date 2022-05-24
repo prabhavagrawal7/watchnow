@@ -27,11 +27,13 @@ $(() => {
     $('.movie').hover(
         function () {
             $(this).children('.movie-details').show(); 
-            $(this).animate({ 'width': '363px', 'height': '203.5px'}, 100)
+            $(this).css({'border': '2px solid #0177ff', 'z-index': 10, 'transform': 'scale(1.2)'}); 
+            // $(this).animate({ 'width': '363px'}, 100);
         },
         function () {
+            $(this).css({'border': '', 'z-index': 1, 'transform': 'scale(1.0)'}); 
             $(this).children('.movie-details').hide();
-            $(this).animate({ 'width': '330px', 'height': '185px' }, 200)
+            // $(this).animate({ 'width': '330px'}, 200)
         }, 
     )
 });

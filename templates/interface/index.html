@@ -1,13 +1,18 @@
 {% extends 'interface/basic.html' %}
 {% load static %}
+{% load tags %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 {% endblock css %}
 {% block body %}
 
 <body>
     {% for category_name, category_movies in user_movies %}
     <div class="category-name">{{category_name}}</div>
+    {% comment %}
+    Carousel starts from here
+    {% endcomment %}
     <div class="movie-con" id='{{category_name}}'>
         <div class="prev">
             <div class="adjuster">
@@ -17,32 +22,34 @@
         {% for movie in category_movies %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="movie-slide">
-        {% endif %}
-        
-        <div class="movie" id="{{movie.movie_id}}">
-            <a class="movie-img" href = "/movie/{{movie.movie_id}}">
-                <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
-            </a>
-            {% comment %} <div class="movie-details" style="display:none"> {% endcomment %}
-            <div class="movie-details">
-                <div class="movie-title">{{movie.movie_title}}</div>
-                <div class="movie-desc">{{movie.movie_desc|truncatechars:150}}</div>
+            {% endif %}
+            <div class="movie" id="{{movie.movie_id}}">
+                <a class="movie-img" href="/movie/{{movie.movie_id}}">
+                    <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
+                </a>
+                <div class="movie-details" style="display:none">
+                    {% comment %} <div class="movie-details"> {% endcomment %}
+                        <div class="movie-title">{{movie.movie_title}}</div>
+                        <div class="movie-rating">Rating : {{movie.movie_rating_sum|div:movie.movie_rating_count}} ⭐
+                        </div>
+                        <div class="movie-desc">{{movie.movie_desc|truncatechars:150}}</div>
+                    </div>
+                </div>
+                {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <div class="next">
+                <div class="adjuster">
+                    <img src="{% static 'img/next.svg' %}" alt="">
+                </div>
             </div>
         </div>
-        {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
         {% endfor %}
-        <div class="next">
-            <div class="adjuster">
-                <img src="{% static 'img/next.svg' %}" alt="">
-            </div>
-        </div>
     </div>
-    {% endfor %}
 </body>
 {% endblock body %}
 
 {% block js %}
-<script src="{% static 'js/index.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/movie_carousel.js' %}" type="text/javascript"></script>
 {% endblock js %}

@@ -1,9 +1,0 @@
-{% extends 'basic.html' %}
-{% block body %}
-<body>
-    <form action="/signup/" method="post"> {% csrf_token %}
-        {{form}}
-        <button type="submit button-primary">Create your Account</button>
-    </form>
-</body>
-{% endblock body %}

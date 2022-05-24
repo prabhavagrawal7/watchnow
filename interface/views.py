@@ -20,7 +20,13 @@ def index(request):
 def search(request):
     if request.method == 'POST':
         query = request.POST.get('query')
-        movies = Movies.objects.filter(movie_title__icontains=query)
+        query = query.strip()
+        if len(query) < 2: 
+            messages.error(request, "Search query must be at least 2 characters")
+            return redirect('index')
+        movies = Movies.objects.all()
+        for small_query in query: 
+            movies.filter(movie_title__icontains=small_query)
         return render(request, 'interface/search.html', {'movies': movies})
 
 
