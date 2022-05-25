@@ -16,8 +16,13 @@ def index(request):
         user_movies = datafetch.indexContent()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
-
-def search(request):
+# Under development
+def search(request): 
+    """
+    Search for movies in the database
+    If movies are not found, instead of returning empty list, redirected to the
+    home page.
+    """
     if request.method == 'POST':
         query = request.POST.get('query')
         query = query.strip()
@@ -102,7 +107,7 @@ def moviePage(request, movie_id):
                       'movie_rating': round(movie.movie_rating_sum/movie.movie_rating_count, 2),
                   })
 
-
+# Under development
 def userrated(request, movie_id):
     if request.method == 'POST':
         movie_rating = request.POST.get('rating')
@@ -126,3 +131,7 @@ def userrated(request, movie_id):
             ratings_to_movie[movie_rating] = [movie_id]
         profile.save()
         return redirect(f'/movie/{movie_id}')
+
+# Under development
+def contact(request): 
+    return render(request, 'contact.html')

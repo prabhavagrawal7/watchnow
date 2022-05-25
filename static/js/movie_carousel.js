@@ -26,8 +26,8 @@ $(() => {
     });
     $('.movie').hover(
         function () {
+            $(this).css({'border': '2px solid #0177ff', 'z-index': 2, 'transform': 'scale(1.15)'}); 
             $(this).children('.movie-details').show(); 
-            $(this).css({'border': '2px solid #0177ff', 'z-index': 10, 'transform': 'scale(1.2)'}); 
             // $(this).animate({ 'width': '363px'}, 100);
         },
         function () {

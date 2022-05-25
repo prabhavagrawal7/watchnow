@@ -15,6 +15,7 @@ body {
 	margin: 0;
 	justify-content: flex-start;
 	align-items: center;
+	overflow: hidden;
 }
 
 .nav-icon {
@@ -58,7 +59,7 @@ body {
 	border-radius: 4px;
 	position: relative;
 	overflow: hidden;
-	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.339);
 	font-size: 16px;
 	transition: all 0.3s;
 }
@@ -161,7 +162,7 @@ input[type="email"]:focus {
 	/* Hidden by default */
 	position: fixed;
 	/* Stay in place */
-	z-index: 1;
+	z-index: 2;
 	/* Sit on top */
 	padding-top: 100px;
 	/* Location of the box */
@@ -212,4 +213,33 @@ input[type="email"]:focus {
 	color: #fff;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+
+.alert {
+	display: block;
+	border-radius: 4px;
+	color: #842029;
+	padding: 100%;
+	background-color: #F8D7DA;
+	margin-top: 1px;
+	z-index: -1;
+	margin: 0 0 0 0;
+	box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
+	-webkit-box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
+	-moz-box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
+	font-size: 20px;
+	text-align: left;
+	justify-content: center;
+}
+
+.alert-success {
+	color: #0F5131;
+	background-color: #58ffb3;
+}
+
+.alert-error {
+	text-shadow: 0px 0px 1px rgb(0, 0, 0);
+	background-color: #ff4846;
+	color: #ffb9b8;
 }

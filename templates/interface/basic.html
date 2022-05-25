@@ -1,102 +1,106 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.svg' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/basic.css' %}" />
-    <title>WatchNow</title>
-    <!-- jquery cdn here -->
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"> </script>
-    {% block css %}{% endblock css %}
-</head>
-
-<body>
-    <div class="nav">
-        <div class="left-side">
-            <img src="{% static 'img/favicon.svg' %}" alt="" class="nav-icon">
-            <a class="nav-title" href="/">WatchNow </a>
-            <a class="nav-inner" href="/">Home</a>
-            <a class="nav-inner" href="/contact">Contact Us</a>
-        </div>
-        <div class="right-side">
-            <form action="/search/" method="POST" class="nav-search"> {% csrf_token %}
-                <input type="text" name="query" placeholder="Search">
-                <button type="submit" class="button-dark">Search</button>
-            </form>
-            {% if user.is_authenticated %}
-            <div class="nav-acc-ddown">
-                <div class="acc-ddown button-dark">{{ user.first_name }} <span class="user-dropdown-icon">&#9662;</span>
-                </div>
-                <div class="ctnt">
-                    <a href="/editprofile">Account Overview</a>
-                    <a href="/logout">Logout</a>
-                </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.svg' %}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+              rel="stylesheet"/>
+        <link rel="stylesheet" href="{% static 'css/basic.css' %}" />
+        <title>WatchNow</title>
+        <!-- jquery cdn here -->
+        <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+        {% block css %}
+        {% endblock css %}
+    </head>
+    <body>
+        <div class="nav">
+            <div class="left-side">
+                <img src="{% static 'img/favicon.svg' %}" alt="watchnow icon" class="nav-icon" />
+                <a class="nav-title" href="{% url 'index' %}">WatchNow</a>
+                <a class="nav-inner" href="{% url 'index' %}">Home</a>
+                <a class="nav-inner" href="{% url 'contact' %}">Contact Us</a>
             </div>
-            {% else %}
-            <a class="button-dark modal-open" id="login">Login</a>
-            <a class="button-dark modal-open" id="signup">Sign Up </a>
-            {% endif %}
+            <div class="right-side">
+                <form action="{% url 'search' %}" method="post" class="nav-search">
+                    {% csrf_token %}
+                    <input type="text" name="query" placeholder="Search" />
+                    <button type="submit" class="button-dark">Search</button>
+                </form>
+                {% if user.is_authenticated %}
+                    <div class="nav-acc-ddown">
+                        <div class="acc-ddown button-dark">
+                            {{ user.first_name }}
+                            <span class="user-dropdown-icon">▾</span>
+                        </div>
+                        <div class="ctnt">
+                            <a href="/editprofile">Account Overview</a>
+                            <a href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a class="button-dark modal-open" id="login">Login</a>
+                    <a class="button-dark modal-open" id="signup">Sign Up</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
-    {% for message in messages %}
-    <div class="alert blog-alert blog-alert-{{message.tags}} alert-dismissible fade show" id="alert-account"
-        role="alert">
-        {{ message|safe }}
-        <span class="btn btn-close" data-bs-dismiss="alert" aria-label="Close" style="float: right;"></span>
-    </div>
-    {% endfor %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="message message-{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     {% if not user.is_authenticated %}
-    <div id="login-modal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="suspended-close">
-                <div class="close-login close">&times;</div>
+        <div id="login-modal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="suspended-close">
+                    <div class="close-login close">×</div>
+                </div>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" />
+                    <label for="password" name="password">Password:</label>
+                    <input type="password" name="password" />
+                    <button type="submit" class="button-dark">Login</button>
+                </form>
             </div>
-            <form action="/login/" method="post"> {% csrf_token %}
-                <label for="username">Username:</label>
-                <input type="text" name="username">
-                <label for="password" name="password">Password:</label>
-                <input type="password" name="password">
-                <button type="submit" class="button-dark">Login</button>
-            </form>
         </div>
-    </div>
-    <div id="signup-modal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="suspended-close">
-                <div class="close-signup close">&times;</div>
+        <div id="signup-modal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="suspended-close">
+                    <div class="close-signup close">×</div>
+                </div>
+                <form action="{% url 'signup' %}" method="post">
+                    {% csrf_token %}
+                    <label for="firstname">First Name:</label>
+                    <input type="text" name="firstname" />
+                    <label for="lastname">Last Name:</label>
+                    <input type="text" name="lastname" />
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" />
+                    <label for="password1" name="password1">Enter Password:</label>
+                    <input type="password" name="password1" />
+                    <label for="password2" name="password2">Enter Password Again:</label>
+                    <input type="password" name="password2" />
+                    <label for="email">Email Id:</label>
+                    <input type="email" name="email"//>
+                    <button type="submit" class="button-dark">Sign Up</button>
+                </form>
             </div>
-            <form action="/signup/" method="post"> {% csrf_token %}
-                <label for="firstname">First Name:</label>
-                <input type="text" name="firstname">
-                <label for="lastname">Last Name:</label>
-                <input type="text" name="lastname">
-                <label for="username">Username:</label>
-                <input type="text" name="username">
-                <label for="password1" name="password1">Enter Password:</label>
-                <input type="password" name="password1">
-                <label for="password2" name="password2">Enter Password Again:</label>
-                <input type="password" name="password2">
-                <label for="email">Email Id:</label>
-                <input type="email" name="email">
-                <button type="submit" class="button-dark">Sign Up</button>
-            </form>
         </div>
-    </div>
-    <!-- modal scripting -->
-    <script src="{% static 'js/basic.js' %}"></script>
+        <!-- modal scripting -->
+        <script src="{% static 'js/basic.js' %}"></script>
     {% endif %}
 </body>
-
-
-{% block body %}{% endblock body %}
-{% block js %}{% endblock js %}
-
+{% block body %}
+{% endblock body %}
+{% block js %}
+{% endblock js %}
 </html>

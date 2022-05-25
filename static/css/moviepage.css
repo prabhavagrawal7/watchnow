@@ -1,17 +1,32 @@
-
-#backdrop-img{
+#backdrop-img {
     position: absolute;
     z-index: -2;
-    top: 60px; 
+    top: 60px;
     object-fit: cover;
     width: 100%;
-    filter:blur(3px); 
+    filter: blur(3px);
     overflow: hidden;
 }
-#overlay-container{
+
+#overlay-container {
     background-color: rgba(0, 0, 0, 0.705);
     z-index: -1;
-    width: 100vw; 
-    height: 100vh; 
+    width: 100vw;
+    height: 100vh;
     position: absolute;
+}
+
+.rating-star {
+    cursor: pointer;
+    font-size: larger;
+}
+
+.rating-star-white {
+    color: white;
+    text-shadow: 0px 0px 1px white;
+}
+
+.rating-star-orange {
+    color: orange;
+    text-shadow: 0px 0px 1px gold;
 }

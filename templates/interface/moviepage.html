@@ -1,95 +1,107 @@
-{% extends 'interface/basic.html' %}
+{% extends "interface/basic.html" %}
 {% load static %}
 {% load tags %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/moviepage.css' %}" type="text/css">
-<link rel="stylesheet" href="{% static 'css/carousel.css' %}" type="text/css">
-<style>
-   
-</style>
+    <link rel="stylesheet"
+          href="{% static 'css/moviepage.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'css/movie-carousel.css' %}"
+          type="text/css"/>
 {% endblock css %}
 {% block body %}
-
-<body>
-    {% if moviefound is None %}
-    <h1>Sorry, this page doesn't exists !!!</h1>
-    {% else %}
-    <img src="https://image.tmdb.org/t/p/original/{{movie.movie_img}}" alt="img not found" id = "backdrop-img"/>
-    <div id="overlay-container"></div>
-    <h1 id={{movie.movie_id}}>{{movie.movie_title}}</h1>
-    <form id="rate-form" method="post" action="/userrated/{{movie.movie_id}}"> {% csrf_token %}
-        <input type="hidden" name="rating" id = "rating">
-    </form>
-    <div class="movie-rating">  
-            <h2>Movie Rating: {{movie_rating}} &#11088;</h2>
-            {% if user.is_authenticated %}
-            <span id='1-star' style="color:grey;">&starf;</span>
-            <span id='2-star' style="color:grey;">&starf;</span>
-            <span id='3-star' style="color:grey;">&starf;</span>
-            <span id='4-star' style="color:grey;">&starf;</span>
-            <span id='5-star' style="color:grey;">&starf;</span>
-            {% endif %}
-        </div>
-    {% endif %}
-    </div>
-
-    <h1>Movies more like {{movie.movie_title}}</h1>
-    {% comment %} {% for category_name, category_movies in user_movies %} {% endcomment %}
-    <div class="category-name">{{category_name}}</div>
-    {% comment %}
-    Carousel starts from here
-    {% endcomment %}
-    <div class="movie-con" id='{{category_name}}'>
-        <div class="prev">
-            <div class="adjuster">
-                <img src="{% static 'img/prev.svg' %}" alt="">
+    <body>
+        {% if moviefound is None %}
+            <h1>Sorry, this page doesn't exists !!!</h1>
+        {% else %}
+            <img src="https://image.tmdb.org/t/p/original/{{ movie.movie_img }}"
+                 alt="img not found"
+                 id="backdrop-img"/>
+            <div id="overlay-container"></div>
+            <h1 id="{{ movie.movie_id }}">{{ movie.movie_title }}</h1>
+            <form id="rate-form"
+                  method="post"
+                  action="{% url 'userrated' movie.movie_id %}">
+                {% csrf_token %}
+                <input type="hidden" name="rating" id="rating"/>
+            </form>
+            <div class="movie-rating">
+                <h2>Movie Rating: {{ movie_rating }} ⭐</h2>
+                {% if user.is_authenticated %}
+                Rate Movie: 
+                    <span id="1-star" class="rating-star rating-star-white">★</span>
+                    <span id="2-star" class="rating-star rating-star-white">★</span>
+                    <span id="3-star" class="rating-star rating-star-white">★</span>
+                    <span id="4-star" class="rating-star rating-star-white">★</span>
+                    <span id="5-star" class="rating-star rating-star-white">★</span>
+                {% endif %}
             </div>
-        </div>
-        {% for movie in similar_movies %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="movie-slide">
-            {% endif %}
-
-            <div class="movie" id="{{movie.movie_id}}">
-                <a class="movie-img" href="/movie/{{movie.movie_id}}">
-                    <img src="https://image.tmdb.org/t/p/w500/{{movie.movie_img}}">
-                </a>
-                <div class="movie-details" style="display:none">
-                    {% comment %} <div class="movie-details"> {% endcomment %}
-                        <div class="movie-title">{{movie.movie_title}}</div>
-                        <div class="movie-rating">Rating : {{movie.movie_rating_sum|div:movie.movie_rating_count}} ⭐
-                        </div>
-                        <div class="movie-desc">{{movie.movie_desc|truncatechars:150}}</div>
-                    </div>
+        {% endif %}
+        <h1>Movies more like {{ movie.movie_title }}</h1>
+        {% comment %} {% for category_name, category_movies in user_movies %} {% endcomment %}
+        <div class="category-name">{{ category_name }}</div>
+        {% comment %}
+        Carousel starts from here
+        {% endcomment %}
+        <div class="movie-con" id="{{ category_name }}">
+            <div class="prev">
+                <div class="adjuster">
+                    <img src="{% static 'img/prev.svg' %}" alt="prev icon"/>
                 </div>
-                {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
             </div>
-            {% endif %}
+            {% for movie in similar_movies %}
+                {% if forloop.counter0|divisibleby:4 %}
+                    <div class="movie-slide">
+                    {% endif %}
+                    <div class="movie" id="{{ movie.movie_id }}">
+                        <a class="movie-img" href="{% url 'moviepage' movie.movie_id %}">
+                            <img src="https://image.tmdb.org/t/p/w500/{{ movie.movie_img }}"
+                                 alt="{{ movie.movie_name }} poster"/>
+                        </a>
+                        <div class="movie-details" style="display:none">
+                            {% comment %} <div class="movie-details"> {% endcomment %}
+                            <div class="movie-title">{{ movie.movie_title }}</div>
+                            <div class="movie-rating">Rating : {{ movie.movie_rating_sum|div:movie.movie_rating_count }} ⭐</div>
+                            <div class="movie-desc">{{ movie.movie_desc|truncatechars:150 }}</div>
+                        </div>
+                    </div>
+                    {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
+                    </div>
+                {% endif %}
             {% endfor %}
             <div class="next">
                 <div class="adjuster">
-                    <img src="{% static 'img/next.svg' %}" alt="">
+                    <img src="{% static 'img/next.svg' %}" alt="next icon"/>
                 </div>
             </div>
         </div>
-        {% comment %} {% endfor %} {% endcomment %}
     </div>
 </body>
 {% endblock body %}
 {% block js %}
- <script>
-for (i = 1; i <= {{user_rated|default_if_none:0}}; i++) {
-    $(`#${i}-star`).css('color', 'gold');
+    <script>
+for (i = 1; i <= {{ user_rated|default_if_none:0 }}; i++) {
+    {% comment %} $(`#${i}-star`).css('color', 'orange'); {% endcomment %}
+    $(`#${i}-star`).removeClass('rating-star-white'); 
+    $(`#${i}-star`).addClass('rating-star-orange'); 
+}
+for (i = {{ user_rated|default_if_none:0 }}; i <= 5; i++) {
+    {% comment %} $(`#${i}-star`).css('color', 'white'); {% endcomment %}
+    $(`#${i}-star`).addClass('rating-star-white'); 
+    $(`#${i}-star`).removeClass('rating-star-orange'); 
 }
 $('span').hover(
     function () {
+        console.log("hello"); 
         for (i = 1; i <= this.id.split("-")[0]; i++) {
-            $(`#${i}-star`).css('color', 'gold');
+            $(`#${i}-star`).removeClass('rating-star-white'); 
+            $(`#${i}-star`).addClass('rating-star-orange'); 
         }
     },
     function () {
         for (i = {{user_rated|default_if_none:0}}+1; i <= this.id.split("-")[0]; i++) {
-            $(`#${i}-star`).css('color', 'grey');
+            $(`#${i}-star`).addClass('rating-star-white'); 
+            $(`#${i}-star`).removeClass('rating-star-orange'); 
         }
     }
 )
@@ -97,8 +109,7 @@ $('span').click(function () {
     $('#rating').val(this.id.split("-")[0]); 
     $('#rate-form').submit();
 })
-</script> 
-
-<script src="{% static 'js/movie_carousel.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/moviepage.js' %}" type="text/javascript"></script>
+    </script>
+    <script src="{% static 'js/movie_carousel.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/moviepage.js' %}" type="text/javascript"></script>
 {% endblock js %}
