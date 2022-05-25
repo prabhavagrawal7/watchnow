@@ -38,6 +38,7 @@ def search(request):
 def userLogout(request):
     if request.user.is_authenticated:
         logout(request)
+        messages.success(request, "Logged out successfully !")
         return redirect('index')
 
 
@@ -108,7 +109,7 @@ def moviePage(request, movie_id):
                   })
 
 # Under development
-def userrated(request, movie_id):
+def userRating(request, movie_id):
     if request.method == 'POST':
         movie_rating = request.POST.get('rating')
         movie = Movies.objects.get(movie_id=movie_id)
@@ -118,8 +119,6 @@ def userrated(request, movie_id):
         # some aliasings
         movie_to_ratings = profile.user_ratings['movies_to_ratings']
         ratings_to_movie = profile.user_ratings['ratings_to_movies']
-        print(id(movie_to_ratings))
-        print(id(profile.user_ratings['movies_to_ratings']))
         # If user is already rated before, then removing the older ratings
         if movie_to_ratings.get(movie_id) is not None:
             ratings_to_movie[movie_to_ratings[movie_id]].remove(movie_id)

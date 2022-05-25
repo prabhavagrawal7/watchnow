@@ -18,89 +18,105 @@
     </head>
     <body>
         <div class="nav">
-            <div class="left-side">
-                <img src="{% static 'img/favicon.svg' %}" alt="watchnow icon" class="nav-icon" />
+            <div class="nav-left">
+                <img src="{% static 'img/favicon.svg' %}"
+                     alt="watchnow icon"
+                     class="nav-icon"/>
                 <a class="nav-title" href="{% url 'index' %}">WatchNow</a>
                 <a class="nav-inner" href="{% url 'index' %}">Home</a>
                 <a class="nav-inner" href="{% url 'contact' %}">Contact Us</a>
             </div>
-            <div class="right-side">
+            <div class="nav-right">
                 <form action="{% url 'search' %}" method="post" class="nav-search">
                     {% csrf_token %}
                     <input type="text" name="query" placeholder="Search" />
-                    <button type="submit" class="button-dark">Search</button>
+                    <button type="submit" class="btn-dark">Search</button>
                 </form>
                 {% if user.is_authenticated %}
-                    <div class="nav-acc-ddown">
-                        <div class="acc-ddown button-dark">
+                    <div class="acc-dropdown">
+                        <div class="acc-dropdown-btn btn-dark">
                             {{ user.first_name }}
-                            <span class="user-dropdown-icon">▾</span>
+                            <span class="user-dropdown-element">▾</span>
                         </div>
-                        <div class="ctnt">
-                            <a href="/editprofile">Account Overview</a>
-                            <a href="{% url 'logout' %}">Logout</a>
+                        <div class="acc-dropdown-content">
+                            <div class="acc-dropdown-link">
+                                <a href="/profileoverview">Account Overview</a>
+                            </div>
+                            <div class="acc-dropdown-link">
+                                <a href="{% url 'logout' %}">Logout</a>
+                            </div>
                         </div>
                     </div>
                 {% else %}
-                    <a class="button-dark modal-open" id="login">Login</a>
-                    <a class="button-dark modal-open" id="signup">Sign Up</a>
+                    <a class="btn-dark modal-open" id="login">Login</a>
+                    <a class="btn-dark modal-open" id="signup">Sign Up</a>
                 {% endif %}
             </div>
         </div>
         {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="message message-{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+            <ul class="alert-messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+                        <div class="alert-close-btn">×</div>
+                        <div class="message">{{ message }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
-    {% if not user.is_authenticated %}
-        <div id="login-modal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="suspended-close">
-                    <div class="close-login close">×</div>
+        {% if not user.is_authenticated %}
+            <div id="login-modal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="suspended-close">
+                        <div class="close-login close">×</div>
+                    </div>
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" />
+                        <label for="password" name="password">Password:</label>
+                        <input type="password" name="password" />
+                        <button type="submit" class="btn-dark">Login</button>
+                    </form>
                 </div>
-                <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" />
-                    <label for="password" name="password">Password:</label>
-                    <input type="password" name="password" />
-                    <button type="submit" class="button-dark">Login</button>
-                </form>
             </div>
-        </div>
-        <div id="signup-modal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="suspended-close">
-                    <div class="close-signup close">×</div>
+            <div id="signup-modal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="suspended-close">
+                        <div class="close-signup close">×</div>
+                    </div>
+                    <form action="{% url 'signup' %}" method="post">
+                        {% csrf_token %}
+                        <label for="firstname">First Name:</label>
+                        <input type="text" name="firstname" />
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" name="lastname" />
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" />
+                        <label for="password1" name="password1">Enter Password:</label>
+                        <input type="password" name="password1" />
+                        <label for="password2" name="password2">Enter Password Again:</label>
+                        <input type="password" name="password2" />
+                        <label for="email">Email Id:</label>
+                        <input type="email" name="email"//>
+                        <button type="submit" class="btn-dark">Sign Up</button>
+                    </form>
                 </div>
-                <form action="{% url 'signup' %}" method="post">
-                    {% csrf_token %}
-                    <label for="firstname">First Name:</label>
-                    <input type="text" name="firstname" />
-                    <label for="lastname">Last Name:</label>
-                    <input type="text" name="lastname" />
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" />
-                    <label for="password1" name="password1">Enter Password:</label>
-                    <input type="password" name="password1" />
-                    <label for="password2" name="password2">Enter Password Again:</label>
-                    <input type="password" name="password2" />
-                    <label for="email">Email Id:</label>
-                    <input type="email" name="email"//>
-                    <button type="submit" class="button-dark">Sign Up</button>
-                </form>
             </div>
-        </div>
-        <!-- modal scripting -->
-        <script src="{% static 'js/basic.js' %}"></script>
-    {% endif %}
-</body>
-{% block body %}
-{% endblock body %}
-{% block js %}
-{% endblock js %}
+            <!-- modal scripting -->
+            <script src="{% static 'js/basic.js' %}"></script>
+        {% endif %}
+        <script>
+            $('.alert-close-btn').click(removeAlert); 
+            function removeAlert() {
+                console.log(this.parentNode); 
+                $(this.parentNode).remove(); 
+            }
+        </script>
+    </body>
+    {% block body %}
+    {% endblock body %}
+    {% block js %}
+    {% endblock js %}
 </html>

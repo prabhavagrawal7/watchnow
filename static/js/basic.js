@@ -40,4 +40,5 @@ $(()=> {
             signup_modal.style.display = "none";
         }
     }
+
 });

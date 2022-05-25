@@ -1,9 +1,40 @@
+:root {
+	--blue: #0077ff;
+	--red: #ff4846;
+	--green: #58ffb3;
+	--black: #10171e;
+	--white: #eaeaea;
+}
+
 body {
 	padding: 0;
 	margin: 0;
-	background-color: #10171e;
-	color: #fff;
+	background-color: var(--black);
+	color: var(--white);
 	font-family: 'Open Sans', sans-serif;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+	width: 100%;
+	height: 37px;
+	display: inline-flex;
+	padding: 6px 10px;
+	border-radius: 3px;
+	font-size: 16px;
+	border: none;
+	margin: 8px 8px;
+	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
+	transition: all 0.5s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+	outline: none;
+	box-shadow: 0px 0px 8px 0px rgb(0, 255, 68);
 }
 
 .nav {
@@ -40,8 +71,8 @@ body {
 	text-decoration: none;
 }
 
-.button-dark,
-.button-dark:hover {
+.btn-dark,
+.btn-dark:hover {
 	text-decoration: none;
 	width: fit-content;
 	height: fit-content;
@@ -64,67 +95,56 @@ body {
 	transition: all 0.3s;
 }
 
-.button-dark:hover {
+.btn-dark:hover {
 	background-color: #000;
 	box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
-.button-dark:active {
+.btn-dark:active {
 	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.15);
 }
 
-
-
-.acc-ddown {
-	display: inline-block;
+.acc-dropdown {
+	width: fit-content;
+	margin: 10px;
 }
 
-.nav-acc-ddown .ctnt {
+.acc-dropdown-content {
 	display: none;
+	/* to be removed -- */
+	/* -- to be removed */
 }
 
-.nav-acc-ddown:hover .ctnt {
-	display: flex;
-	flex-direction: column;
-	position: absolute;
-	z-index: 2;
-}
-
-.user-dropdown-icon {
-	color: white;
-}
-
-.ctnt a {
-	padding-inline: 8px;
-	padding-block: 8px;
+.acc-dropdown-link {
 	text-decoration: none;
-	background-color: aqua;
-	border: 1px solid green;
+	color: white;
+	padding: 10px;
+	border-bottom: 1px solid black;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-	width: 100%;
-	height: 37px;
-	display: inline-flex;
-	padding: 6px 10px;
-	border-radius: 3px;
-	font-size: 16px;
-	border: none;
-	margin: 8px 8px;
-	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.15);
-	box-sizing: border-box;
-	transition: all 0.5s ease;
+.acc-dropdown-link a {
+	text-decoration: none;
+	color: white;
+	transition: all 0.2s linear;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
-	outline: none;
-	box-shadow: 0px 0px 8px 0px rgb(0, 255, 68);
+.acc-dropdown-link:hover a {
+	color: black;
 }
 
+.acc-dropdown:hover .acc-dropdown-content {
+	position: absolute;
+	right: 0;
+	display: block;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-decoration: none;
+	background-color: #ff5d5b;
+	z-index: 2;
+	border-radius: 4px;
+	top: inherit;
+	left: inherit;
+}
 
 .nav-search {
 	margin: 8px;
@@ -137,8 +157,8 @@ input[type="email"]:focus {
 	width: 20%;
 }
 
-.left-side {
-	background-color: #0077ff;
+.nav-left {
+	background-color: var(--blue);
 	display: flex;
 	align-self: auto;
 	height: 60px;
@@ -147,8 +167,8 @@ input[type="email"]:focus {
 	align-items: center;
 }
 
-.right-side {
-	background-color: #0077ff;
+.nav-right {
+	background-color: var(--blue);
 	display: flex;
 	align-self: auto;
 	height: 60px;
@@ -210,36 +230,40 @@ input[type="email"]:focus {
 
 .close:hover,
 .close:focus {
-	color: #fff;
+	color: var(--white);
 	text-decoration: none;
 	cursor: pointer;
 }
 
 
+.alert-messages{
+	margin: 0; 
+	padding: 0;
+	list-style: none inside;
+}
 .alert {
-	display: block;
-	border-radius: 4px;
-	color: #842029;
-	padding: 100%;
-	background-color: #F8D7DA;
-	margin-top: 1px;
-	z-index: -1;
-	margin: 0 0 0 0;
-	box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
-	-webkit-box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
-	-moz-box-shadow: 0px 1px 6px 1px rgb(0, 0, 0);
-	font-size: 20px;
-	text-align: left;
-	justify-content: center;
+	background-color: blue; 
+	padding: 10px; 
 }
 
 .alert-success {
 	color: #0F5131;
-	background-color: #58ffb3;
+	background-color: var(--green);
 }
 
 .alert-error {
 	text-shadow: 0px 0px 1px rgb(0, 0, 0);
-	background-color: #ff4846;
+	background-color: var(--red);
 	color: #ffb9b8;
+}
+
+.alert-close-btn{
+	float: right;
+	margin-left: 10px; 
+	margin-right: 10px; 
+	font-size: large;
+}
+.alert-close-btn:hover{
+	color: var(--black);
+	cursor: pointer; 
 }

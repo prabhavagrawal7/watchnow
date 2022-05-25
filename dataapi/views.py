@@ -88,7 +88,6 @@ def indexContent(profile=None) -> list():
 
     contents.append(('Top movies', popularMovies(16)))
     global all_genres
-    print(all_genres)
     if profile is not None:
         movies_based_on_profile = profile_movies(profile)
         for movie_lists in movies_based_on_profile:
