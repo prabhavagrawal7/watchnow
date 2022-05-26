@@ -8,6 +8,7 @@ class Movies(models.Model):
     movie_img = models.ImageField(upload_to='static/img', null=True)
     movie_desc = models.CharField(max_length=25000, null=True)
     movie_genres = models.JSONField()
+    movie_trailer_link = models.ImageField(upload_to='static/img', null=True)
     movie_rating_count = models.IntegerField(default=0)
     movie_rating_sum = models.IntegerField(default=0)
     def __str__(self):

@@ -21,13 +21,13 @@
     /* height: 185px; */
     margin-inline: 7px;
     cursor: default;
-    background-color: #000000;
+    background-color: var(--black);
 	transition: all 0.2s ease-in;
 }
 .movie-img {
     /* width: 330px; */
     /* height: 185px; */
-    color: black;
+    color: var(--blacker);
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -60,7 +60,7 @@ img {
     display: block;
     position: relative;
     width: inherit;
-    background-color: black;
+    background-color: #0f1d2e;
     z-index: 2;
     word-wrap: break-word;
 }

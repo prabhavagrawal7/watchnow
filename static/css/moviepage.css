@@ -1,3 +1,7 @@
+body{
+    height: 1000px; 
+    background-color: rgba(0,0,0,1); 
+}
 #backdrop-img {
     position: absolute;
     z-index: -2;
@@ -9,13 +13,19 @@
 }
 
 #overlay-container {
-    background-color: rgba(0, 0, 0, 0.705);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 100%);
     z-index: -1;
     width: 100vw;
     height: 100vh;
     position: absolute;
 }
-
+.container-fluid{
+    margin-inline: 100px;
+}
+.movie-display-title{
+    padding: 10px; 
+    font-size: 2em; 
+}
 .rating-star {
     cursor: pointer;
     font-size: larger;
@@ -29,4 +39,35 @@
 .rating-star-orange {
     color: orange;
     text-shadow: 0px 0px 1px gold;
+}
+
+.movie-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: normal;
+    align-content: normal;
+}
+.movie-trailer{
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+    padding: 10px; 
+}
+.movie-description{
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+    padding-left: 30px; 
+}
+
+.movie-similar-title{
+    padding-left: 40px; 
 }

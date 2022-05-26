@@ -18,27 +18,42 @@
                  alt="img not found"
                  id="backdrop-img"/>
             <div id="overlay-container"></div>
-            <h1 id="{{ movie.movie_id }}">{{ movie.movie_title }}</h1>
-            <form id="rate-form"
-                  method="post"
-                  action="{% url 'userrating' movie.movie_id %}">
-                {% csrf_token %}
-                <input type="hidden" name="rating" id="rating"/>
-            </form>
-            <div class="movie-rating">
-                <h2>Movie Rating: {{ movie_rating }} ⭐</h2>
-                {% if user.is_authenticated %}
-                    Rate Movie:
-                    <span id="1-star" class="rating-star rating-star-white">★</span>
-                    <span id="2-star" class="rating-star rating-star-white">★</span>
-                    <span id="3-star" class="rating-star rating-star-white">★</span>
-                    <span id="4-star" class="rating-star rating-star-white">★</span>
-                    <span id="5-star" class="rating-star rating-star-white">★</span>
-                {% endif %}
+            <div class="container-fluid">
+                <h1 class="movie-display-title" id="{{ movie.movie_id }}">{{ movie.movie_title }}</h1>
+                <div class="movie-container">
+                    <div class="movie-trailer">
+                        <iframe width="560"
+                                height="315"
+                                src="https://www.youtube.com/embed/{{ movie.movie_trailer_link }}"
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="movie-description">
+                        <form id="rate-form"
+                              method="post"
+                              action="{% url 'userrating' movie.movie_id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="rating" id="rating"/>
+                        </form>
+                        <div class="movie-rating">
+                            <h2>Movie Rating: {{ movie_rating }} ⭐</h2>
+                            {% if user.is_authenticated %}
+                                Rate Movie:
+                                <span id="1-star" class="rating-star rating-star-white">★</span>
+                                <span id="2-star" class="rating-star rating-star-white">★</span>
+                                <span id="3-star" class="rating-star rating-star-white">★</span>
+                                <span id="4-star" class="rating-star rating-star-white">★</span>
+                                <span id="5-star" class="rating-star rating-star-white">★</span>
+                            {% endif %}
+                        </div>
+                        <div class="movie-desc">{{ movie.movie_desc }}</div>
+                    </div>
+                </div>
             </div>
-            <div class="movie-desc">{{ movie.movie_desc }}</div>
         {% endif %}
-        <h1>Movies more like {{ movie.movie_title }}</h1>
+        <h1 class="movie-similar-title">Movies similar to {{ movie.movie_title }}</h1>
         {% comment %} {% for category_name, category_movies in user_movies %} {% endcomment %}
         <div class="category-name">{{ category_name }}</div>
         {% comment %}
