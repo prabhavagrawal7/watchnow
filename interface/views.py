@@ -10,10 +10,10 @@ import dataapi.views as datafetch
 def index(request):
     # get the count vectorizer instance
     if request.user.is_authenticated:
-        user_movies = datafetch.indexContent(
+        user_movies = datafetch.index_content(
             Profile.objects.get(user=request.user))
     else:
-        user_movies = datafetch.indexContent()
+        user_movies = datafetch.index_content()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
 # Under development
@@ -25,13 +25,13 @@ def search(request):
     """
     if request.method == 'POST':
         query = request.POST.get('query')
-        query = query.strip()
         if len(query) < 2: 
             messages.error(request, "Search query must be at least 2 characters")
             return redirect('index')
+        query = query.strip().split()
         movies = Movies.objects.all()
         for small_query in query: 
-            movies.filter(movie_title__icontains=small_query)
+            movies = movies.filter(movie_title__icontains=small_query)
         return render(request, 'interface/search.html', {'movies': movies})
 
 
@@ -93,7 +93,7 @@ def moviePage(request, movie_id):
     try:
         moviefound = True
         movie = Movies.objects.get(movie_id=movie_id)
-        similar_movies = datafetch.fetchMovieOnMovie(movie)
+        similar_movies = datafetch.fetch_movie_on_movie(movie)
         if request.user.is_authenticated:
             user = Profile.objects.get(user=request.user)
             user_rated = user.user_ratings['movies_to_ratings'].get(movie_id)
