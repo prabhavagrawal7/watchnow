@@ -1,0 +1,93 @@
+{% extends 'interface/basic.html' %}
+
+{% block title %} About Us {% endblock %}
+{% load static %}
+
+{% block css %}
+<style>
+    .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+        text-decoration: underline;
+        text-decoration-color: var(--blue);
+    }
+
+    .container-fluid {
+        margin: 100px 100px 0px 100px;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        padding: 10px;
+    }
+    .logo-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .logo {
+        height: 300px;
+        width: 300px;
+        object-fit: scale-down;
+        display: block;
+    }
+</style>
+{% endblock %}
+{% block body %}
+
+<body>
+    <div class="container-fluid">
+        WatchNow is a project for Microsoft Engage 2022 and is made for the demonstration of algorithms.
+        <br>
+        The project is made between the start of Engage mentorship program (May 05 2022) and final submission date
+        (May 27 2022)
+
+        As the name suggest, it suggest content based on what you liked and it offers what will you like.
+
+        The data used in making of the WatchNow comes from mainly 2 places.
+        <ul>
+            <li> <a href="https://grouplens.org/datasets/movielens/tag-genome-2021/"> Grouplens movielens Dataset </a>
+                </tr>
+            <li> <a href="https://www.themoviedb.org/">The Movie Database API's </a> </tr>
+        </ul>
+        WatchNow has data collection of 7M+ users and 1K+ movies.
+        Only user rating data and rating count is being taken up.
+        <h2>Notable Mentions</h2>
+        <div class="grid-container">
+            <div class="logo-container">
+                <img src="{% static 'img/grouplens-logo.png' %}" class="logo" alt="grouplens-logo">
+            </div>
+            <div class="logo-container">
+            <img src="{% static 'img/tmdb-logo.svg' %}" class="logo" alt="tmdb-logo">
+            </div>
+            <div class="logo-container">
+            <img src="{% static 'img/django-logo.svg' %}" class="logo" alt="django-logo">
+            </div>
+            <div class="logo-container" style="background-color:orange">
+                <img src="{% static 'img/stackoverflow-logo.svg' %}" class="logo" alt="django-logo" >
+                </div>
+        </div>
+        <div class="row">
+            <div class="column">
+            </div>
+            <div class="column">
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{% endblock%}
+{% block js %}
+
+{% endblock %}

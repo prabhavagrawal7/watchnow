@@ -13,11 +13,16 @@ def index(request):
         If user is not authenticated, index_content will fetch Movies of general content
         If user is authenticated, index_content will fetch Movies of general content + user content
     """
-    if request.user.is_authenticated and    Profile.objects.filter(user = request.user).exists():
+    if request.user.is_authenticated and Profile.objects.filter(user = request.user).exists():
         user_movies = datafetch.index_content(
             Profile.objects.get(user=request.user))
-    else:
+    elif request.user.is_authenticated:
+        profile = Profile(
+                user=request.user,
+                user_ratings={'movies_to_ratings': {}, 'ratings_to_movies': {}})
         user_movies = datafetch.index_content()
+        profile.save()
+        return redirect(index)
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
 
@@ -171,3 +176,7 @@ def contact(request):
         contact.save()
         thank = True
     return render(request, 'interface/contact.html', {'thank' : thank})
+
+
+def about(request):
+    return render(request, 'interface/about.html')

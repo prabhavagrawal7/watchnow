@@ -4,7 +4,7 @@
 The purpose of the project is to get Content based recommendation which ensures that the content you are are watching is appeasing.
 This project is solely built during the period of **Microsoft Engage Mentorship program'22** conducted by Microsoft provide mentorship and to enrich freshmen with various software development techniques.  
 #### Problem statement (as given)
-To build a fully functional prototype with at least one mandatory functionality - a minimum of two participants should be able connect with each other using the product to have a video conversation.  
+To build a fully functional app which demonstrates  conversation.  
 - [x] Status : Accomplised by extending to group calling app from 2 people 
 
 ##### Adopt feature:

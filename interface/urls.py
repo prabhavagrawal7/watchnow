@@ -23,6 +23,7 @@ urlpatterns = [
     path('signup/', views.userSignup, name='signup'),
     path('search/', views.search, name='search'),
     path('contact/', views.contact, name='contact'),
+    path('about/', views.about, name='about'),
     path('movie/<slug:movie_id>/', views.moviePage, name='moviepage'), 
     path('userrating/<slug:movie_id>', views.userRating, name='userrating'), 
     
