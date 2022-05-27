@@ -2,21 +2,25 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Profile, Movies
+from .models import Profile, Movies, Contact
 import dataapi.views as datafetch
 
 
 def index(request):
-    # get the count vectorizer instance
-    if request.user.is_authenticated:
+    """Get the whole content from datafetch
+        If user is not authenticated, index_content will fetch Movies of general content
+        If user is authenticated, index_content will fetch Movies of general content + user content
+    """
+    if request.user.is_authenticated and    Profile.objects.filter(user = request.user).exists():
         user_movies = datafetch.index_content(
             Profile.objects.get(user=request.user))
     else:
         user_movies = datafetch.index_content()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
-# Under development
+
 def search(request): 
     """
     Search for movies in the database
@@ -36,13 +40,19 @@ def search(request):
 
 
 def userLogout(request):
+    """
+    Logout the user session
+    """
     if request.user.is_authenticated:
         logout(request)
         messages.success(request, "Logged out successfully !")
-        return redirect('index')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def userLogin(request):
+    """
+    Creates a user session
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -54,10 +64,16 @@ def userLogin(request):
             login(request, user)
     else:
         messages.error(request, "Login failed")
-    return redirect('index')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def userSignup(request):
+    """
+    Signup a user 
+    Creates Profile object with 
+    user_ratings default as ->{'movies_to_ratings': {}, 'ratings_to_movies': {}})
+    If not registered, redirects to 
+    """
     if(request.method == 'POST'):
         username = request.POST.get('username')
         password1 = request.POST.get('password1')
@@ -85,10 +101,13 @@ def userSignup(request):
             messages.error(request, "This username is already registered")
     else:
         messages.error(request, "Some error occurred, please try again")
-    return redirect('index')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def moviePage(request, movie_id):
+    """
+    Returns a dedicated page for the particular movie
+    """
     user_rated = None
     try:
         moviefound = True
@@ -110,6 +129,10 @@ def moviePage(request, movie_id):
 
 # Under development
 def userRating(request, movie_id):
+    """
+    Function to store user rating in database
+    It does by adding to sum of all ratings of the movies 
+    """
     if request.method == 'POST':
         movie_rating = request.POST.get('rating')
         movie = Movies.objects.get(movie_id=movie_id)
@@ -121,6 +144,9 @@ def userRating(request, movie_id):
         ratings_to_movie = profile.user_ratings['ratings_to_movies']
         # If user is already rated before, then removing the older ratings
         if movie_to_ratings.get(movie_id) is not None:
+            # removing old movie rating from user and movie
+            movie.movie_rating_sum -= int(movie_to_ratings[movie_id])
+            movie.movie_rating_count -= 1
             ratings_to_movie[movie_to_ratings[movie_id]].remove(movie_id)
 
         movie_to_ratings[movie_id] = movie_rating
@@ -128,9 +154,20 @@ def userRating(request, movie_id):
             ratings_to_movie[movie_rating].append(movie_id)
         else:
             ratings_to_movie[movie_rating] = [movie_id]
+        movie.save()
         profile.save()
         return redirect(f'/movie/{movie_id}')
 
 # Under development
-def contact(request): 
-    return render(request, 'contact.html')
+
+def contact(request):
+    thank = False
+    if request.method=="POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        desc = request.POST.get('desc', '')
+        contact = Contact(name=name, email=email, phone=phone, desc=desc)
+        contact.save()
+        thank = True
+    return render(request, 'interface/contact.html', {'thank' : thank})

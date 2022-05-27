@@ -17,8 +17,11 @@ popular_movie_list = load('./dataapi/movie_dataset/popular_movies_list.joblib')
 all_genres = load('./dataapi/movie_dataset/all_genres.joblib')
 genres_dict = {}
 
-
 def create_hash():
+    """
+    Creates hashing of movies with the location of indexes
+    Stores the hashes in hash_loc
+    """
     global hash_loc
     hash_loc = dict()
     for i, movie_index in enumerate(movie_indexes):
@@ -53,7 +56,7 @@ def fetch_movie_on_movie(movie) -> list:
     transformed_data is list of list where data(values=ratings, index=movie_id, columns=values) is 
     reduced by StandardScalar and applied PCA on the columns to reduce variable overhead.
 
-    Model to find movie used is K nearest neighbours
+    Model used to find is K Nearest Neighbours
     Model = NearestNeighbors(algorithm='brute', metric='cosine', n_jobs=-1, n_neighbors=21)
     Model returns list of [neighbour distance], [movies with distances]
     """

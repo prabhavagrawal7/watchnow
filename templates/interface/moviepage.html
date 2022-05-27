@@ -101,7 +101,7 @@ for (i = 1; i <= {{ user_rated|default_if_none:0 }}; i++) {
     $(`#${i}-star`).removeClass('rating-star-white'); 
     $(`#${i}-star`).addClass('rating-star-orange'); 
 }
-for (i = {{ user_rated|default_if_none:0 }}; i <= 5; i++) {
+for (i = {{ user_rated|default_if_none:0 }}+1; i <= 5; i++) {
     {% comment %} $(`#${i}-star`).css('color', 'white'); {% endcomment %}
     $(`#${i}-star`).addClass('rating-star-white'); 
     $(`#${i}-star`).removeClass('rating-star-orange'); 

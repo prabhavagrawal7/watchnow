@@ -4,7 +4,7 @@
 	--green: #58ffb3;
 	--black: #10171e;
 	--white: #eaeaea;
-	--blacker: #080c0f; 
+	--blacker: #080c0f;
 }
 
 body {
@@ -17,7 +17,8 @@ body {
 
 input[type="text"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+input[type="tel"] {
 	width: 100%;
 	height: 37px;
 	display: inline-flex;
@@ -33,7 +34,8 @@ input[type="email"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-input[type="email"]:focus {
+input[type="email"]:focus,
+input[type="tel"]:focus {
 	outline: none;
 	box-shadow: 0px 0px 8px 0px rgb(0, 255, 68);
 }
@@ -94,6 +96,7 @@ input[type="email"]:focus {
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.339);
 	font-size: 16px;
 	transition: all 0.3s;
+	cursor: pointer;
 }
 
 .btn-dark:hover {
@@ -104,6 +107,41 @@ input[type="email"]:focus {
 .btn-dark:active {
 	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.15);
 }
+
+
+.btn-blue,
+.btn-blue:hover {
+	text-decoration: none;
+	width: fit-content;
+	height: fit-content;
+	align-self: center;
+	display: flex;
+	justify-content: center;
+	padding: 0.4rem 0.76rem 0.4rem 0.76rem;
+	font-family: 'Open Sans', sans-serif;
+	margin: 2px 2px 2px 2px;
+	border: 1px solid var(--blue);
+	background-color: #1b2430;
+	color: white;
+	border-radius: 4px;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 5px 5px 6px 0px rgba(0, 7, 255, 0.339);
+	font-size: 16px;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.btn-blue:hover {
+	background-color: #000;
+	box-shadow: 2px 2px 4px 5px rgba(0, 7, 255, 0.539);
+	border: 1px solid var(--blue);
+}
+
+.btn-blue:active {
+	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 1.15);
+}
+
 
 .acc-dropdown {
 	width: fit-content;
@@ -237,14 +275,15 @@ input[type="email"]:focus {
 }
 
 
-.alert-messages{
-	margin: 0; 
+.alert-messages {
+	margin: 0;
 	padding: 0;
 	list-style: none inside;
 }
+
 .alert {
-	background-color: blue; 
-	padding: 10px; 
+	background-color: blue;
+	padding: 10px;
 }
 
 .alert-success {
@@ -258,13 +297,14 @@ input[type="email"]:focus {
 	color: #ffb9b8;
 }
 
-.alert-close-btn{
+.alert-close-btn {
 	float: right;
-	margin-left: 10px; 
-	margin-right: 10px; 
+	margin-left: 10px;
+	margin-right: 10px;
 	font-size: large;
 }
-.alert-close-btn:hover{
+
+.alert-close-btn:hover {
 	color: var(--black);
-	cursor: pointer; 
+	cursor: pointer;
 }

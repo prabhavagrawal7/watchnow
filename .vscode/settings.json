@@ -1,5 +1,7 @@
 {
     "lldb.showDisassembly": "auto",
     "lldb.dereferencePointers": true,
-    "lldb.consoleMode": "commands"
+    "lldb.consoleMode": "commands",
+    "lldb.displayFormat": "decimal",
+    "python.linting.enabled": true
 }

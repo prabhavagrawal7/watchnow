@@ -20,3 +20,16 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Contact(models.Model):
+    msg_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    email = models.CharField(max_length=70)
+    phone = models.CharField(max_length=70)
+    desc = models.CharField(max_length=1000)
+
+    def __str__(self):
+        if len(f"{self.name[:75]}: {self.desc}") > 75:
+            return f"{self.name[:75]}: {self.desc}" + '..'
+        else:
+            return f"{self.name[:75]}: {self.desc}"
