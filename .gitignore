@@ -1,5 +1,4 @@
-dataapi/data/
-dataapi/movie_dataset/
+# dataapi/movie_dataset/
 __pycache__/
 db.sqlite3
 .DS_Store
