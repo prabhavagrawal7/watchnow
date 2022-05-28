@@ -188,11 +188,11 @@ def about(request):
     return render(request, 'interface/about.html')
 
 
-def profileoverview(request):
+def profileOverview(request):
     return render(request, 'interface/overview.html')
 
 
-def changepd(request):
+def changePassword(request):
     if (request.method == 'POST'):
         username = request.user
         password1 = request.POST.get('password1')
@@ -213,7 +213,7 @@ def changepd(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def changemail(request):
+def changeMail(request):
     if (request.method == 'POST'):
         username = request.user
         email = request.POST.get('email')
@@ -227,7 +227,7 @@ def changemail(request):
             user.email = email
             user.save()
             messages.success(
-                request, "Your Email is Changed Successfully, please login again")
+                request, "Your Email is Changed Successfully !!")
         else:
             messages.error(request, "Some error occurred, please try again")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
