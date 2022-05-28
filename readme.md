@@ -4,31 +4,39 @@
 The purpose of the project is to get Content based recommendation which ensures that the content you are are watching is appeasing.
 This project is solely built during the period of **Microsoft Engage Mentorship program'22** conducted by Microsoft provide mentorship and to enrich freshmen with various software development techniques.  
 #### Problem statement (as given)
-To build a fully functional app which demonstrates  conversation.  
-- [x] Status : Accomplised by extending to group calling app from 2 people 
+Demonstrate through your app the different kinds of algorithms that a web-streaming app (like Netflix) or an audio-streaming app (like Spotify) may use for their Recommendation Engine.  
+
+- [x] Status : Accomplised by making a KNN model which recommend movie based on given movie. 
 
 ##### Adopt feature:
-Demonstrate through your app the different kinds of algorithms that a web-streaming app (like Netflix) or an audio-streaming app (like Spotify) may use for their Recommendation Engine.  
+To build a fully functional app which demonstrates algorithms take place in recommender system.   
 - [x] Status : Accomplished   
 
-<img width=49% src="/readme_assets/homepage.gif"> <img width=49% src="/readme_assets/hoveroverhome.gif">
+<img width=49% src="readme_assets/homepage.png">
+ <img width=49% src="readme_assets/moviepage.png">
 
-
+<!-- under development -->
 ## 🔗 Links for project:
- Video link : [https://youtu.be/Xolry9YlK7I](https://youtu.be/Xolry9YlK7I)  
- Live demo : Azure : [https://microsoftengageproject.azurewebsites.net](https://microsoftengageproject.azurewebsites.net) Heroku :  [https://microdemo.herokuapp.com/](https://microdemo.herokuapp.com/)
+ Video link : [Not made](Not made)  
+
 ## 🌐 Web flow
-<img width=70% src="https://user-images.githubusercontent.com/56452820/125286530-86d9e500-e339-11eb-92d0-64fa09951138.png" >
+<!-- under development -->
+<img width=80% src="readme_assets/interface-flowchart.png">
+<img width=80% src="readme_assets/dataapi-flowchart.png">
+
 
 
 ## 🚩 Agile methology and workflow:
-Agile methology was followed by implementation of sprint of 4 days in a week , continuous integration and developmet while hosting the app both on Azure and Heroku.
-Work was proceeded in different branches using git version control and successfully developed patches were merged to ruling branch . Customer view points and Teams as an inspiration was taken in mind to develop this project. Bugs were solved according to priority scale
+
+Agile methology was followed by implementation of 
+KNN algorithm on the PCA transformed data which is pre-processed in the jupyter-notebook.
+The methods were performed using git version control system and successfully developed patches which were merged to main branch. Methods were performed according to priority scale.
 Priority scale : P5 (maximum) to P1 (Least)
 
 | Week | Task |  Remarks |
 |------|:----:|---------|
-| 1    | **Design phase** P4: basic app built by exploring technologies  , P3: Setup server Peer.js , express , socket.io P2: Chatbox  |   Successfull setup implementation and chat box            |
+| 1    | **Design phase**   
+ P4: Build basic app layout in Django templates and exploring technologies for data analysis. |  P3: Exploring the data | P2: Chatbox  |   Successfull setup implementation and chat box            |
 | 2    | P4: Screen Sharing , P3: Filters , P2:Send messages button , P5: PeerId undefined(Bug)     |    All bugs resolved             |
 | 3    | P4: List of Participants, P5: Firebase reference error , P3:Hand raise , P5: PeerId undefined(Bug) , P4: Video call connection     |     Problem statement tasking completed|
 | 4    | **Desgin phase and build** P4: Chat Before and after with chat rooms , **Testing and review** P3:Hosting on Azure , P5: Service unavaible error 505 (Bug) , P4: Homepage , P3:Record of participants    |    Adopted task completed  , Branch changing resolved bug             |
