@@ -1,0 +1,129 @@
+{% extends 'interface/basic.html' %}
+{% block title %} Contact Us {% endblock title %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/overview.css'%}">
+{% endblock css %}
+{% block body %}
+
+
+<div class="container">
+    <h1>Profile</h1>
+    <hr>
+    <div class="form-row">
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_5htvozZN6QJfUWY6YXFbgYmTkqxIsJbbt_5Nor-tKyTM8Jj-l2onInDG_6KNyT_9xEw&usqp=CAU"
+            style="height:200px;margin-right: 20px; border-radius: 50%;"></image>
+        <div class="infor">
+            <div class="container2">
+                {% if user.is_authenticated %}
+                <div class="row">
+                    <label for="">Username: </label>
+                    <div class="username">{{ user.username }}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="">First Name: </label>
+                    <div class="firstname">{{ user.first_name }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="">Last Name: </label>
+                    <div class="lastname">{{ user.last_name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for=""> User Email: </label>
+                    <div class="email">{{ user.email }}</div>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="seting">For change password</div>
+            <form action="/changepd/" method="Post">{% csrf_token %}
+                <div class="form-r">
+                    <div class="input-data">
+                        <br>
+                        <label for="">New Password</label>
+                        <input type="text" required id="password1" name="password1"
+                            placeholder="Enter your new password">
+                        <div class="inside"></div>
+
+                    </div>
+                </div>
+                <div class="form-r">
+                    <div class="input-data">
+                        <br>
+                        <label for="">Confirm Password</label>
+                        <input type="text" required id="password2" name="password2"
+                            placeholder="Confirm Your New Password">
+                        <div class="inside"></div>
+
+                    </div>
+                </div>
+                <div class="form-row submittt">
+                    <div class="input-btn">
+                        <div class="inner"></div>
+                        <input type="submit" class="btn-dark" value="Change" style="margin-left: 600px;">
+                    </div>
+                </div>
+            </form>
+            <br>
+            <hr>
+            <br>
+            <div class="seting">For change Your Registered Email</div>
+            <form action="/changemail/" method="post">{% csrf_token %}
+                <div class="form-r">
+                    <br>
+                    <label for="">New Email</label>
+                    <div class="input-data">
+                        <input type="email" required id="email" name="email" placeholder="Enter Your new Email">
+                        <div class="inside"></div>
+                    </div>
+                </div>
+                <div class="form-r">
+                    <br>
+                    <label for="">Confirm Email</label>
+                    <div class="input-data">
+                        <input type="email" required id="email2" name="email2" placeholder="Confirm Your New Email">
+                        <div class="inside"></div>
+
+                    </div>
+                </div>
+                <div class="form-row submittt">
+                    <div class="input-btn">
+                        <div class="inner"></div>
+                        <input type="submit" class="btn-dark" value="Change" style="margin-left: 600px;">
+                    </div>
+                </div>
+            </form>
+
+
+            {% else %}
+            <h2>Unknown</h2>
+            <h3>Please Login Your Account</h3>
+            <br>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+
+
+
+
+{% endblock body %}
+{% block js %}
+<script>
+    {% if thank %}
+    alert('Thanks for contacting us. We wil get back to you soon!');
+    document.location = "{% url 'index' %}";
+    {% endif %}
+</script>
+{% endblock js %}

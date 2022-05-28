@@ -26,5 +26,9 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('movie/<slug:movie_id>/', views.moviePage, name='moviepage'), 
     path('userrating/<slug:movie_id>', views.userRating, name='userrating'), 
+    path('profileoverview/', views.profileoverview, name='profileoverview'),
+    path('changepd/', views.changepd, name='changepd'),
+    path('changemail/', views.changemail, name='changemail'),
+    
     
 ]

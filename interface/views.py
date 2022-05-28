@@ -13,22 +13,22 @@ def index(request):
         If user is not authenticated, index_content will fetch Movies of general content
         If user is authenticated, index_content will fetch Movies of general content + user content
     """
-    if request.user.is_authenticated and Profile.objects.filter(user = request.user).exists():
+    if request.user.is_authenticated and Profile.objects.filter(user=request.user).exists():
         user_movies = datafetch.index_content(
             Profile.objects.get(user=request.user))
     elif request.user.is_authenticated:
         profile = Profile(
-                user=request.user,
-                user_ratings={'movies_to_ratings': {}, 'ratings_to_movies': {}})
+            user=request.user,
+            user_ratings={'movies_to_ratings': {}, 'ratings_to_movies': {}})
         user_movies = datafetch.index_content()
         profile.save()
         return redirect(index)
-    else: 
+    else:
         user_movies = datafetch.index_content()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
 
-def search(request): 
+def search(request):
     """
     Search for movies in the database
     If movies are not found, instead of returning empty list, redirected to the
@@ -36,12 +36,13 @@ def search(request):
     """
     if request.method == 'POST':
         query = request.POST.get('query')
-        if len(query) < 2: 
-            messages.error(request, "Search query must be at least 2 characters")
+        if len(query) < 2:
+            messages.error(
+                request, "Search query must be at least 2 characters")
             return redirect('index')
         query = query.strip().split()
         movies = Movies.objects.all()
-        for small_query in query: 
+        for small_query in query:
             movies = movies.filter(movie_title__icontains=small_query)
         return render(request, 'interface/search.html', {'movies': movies})
 
@@ -135,6 +136,8 @@ def moviePage(request, movie_id):
                   })
 
 # Under development
+
+
 def userRating(request, movie_id):
     """
     Function to store user rating in database
@@ -167,9 +170,10 @@ def userRating(request, movie_id):
 
 # Under development
 
+
 def contact(request):
     thank = False
-    if request.method=="POST":
+    if request.method == "POST":
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         phone = request.POST.get('phone', '')
@@ -177,13 +181,53 @@ def contact(request):
         contact = Contact(name=name, email=email, phone=phone, desc=desc)
         contact.save()
         thank = True
-    return render(request, 'interface/contact.html', {'thank' : thank})
+    return render(request, 'interface/contact.html', {'thank': thank})
 
 
 def about(request):
     return render(request, 'interface/about.html')
 
-def overview(request): 
-    if request.user.is_authenticated:
-        #functionality here
-        return render(request, 'interface/overview.html')
+
+def profileoverview(request):
+    return render(request, 'interface/overview.html')
+
+
+def changepd(request):
+    if (request.method == 'POST'):
+        username = request.user
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            messages.error(request, "Passwords do not match !")
+        elif User.objects.filter(username=request.user).exists():
+            user = User.objects.get(
+                username=request.user
+            )
+            user.password = password1
+            user.set_password(password1)
+            user.save()
+            messages.success(
+                request, "Your Password is Changed Successfully, please login again")
+        else:
+            messages.error(request, "Some error occurred, please try again")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def changemail(request):
+    if (request.method == 'POST'):
+        username = request.user
+        email = request.POST.get('email')
+        email2 = request.POST.get('email2')
+        if email != email2:
+            messages.error(request, "Email do not match !")
+        elif User.objects.filter(username=request.user).exists():
+            user = User.objects.get(
+                username=username,
+            )
+            user.email = email
+            user.save()
+            messages.success(
+                request, "Your Email is Changed Successfully, please login again")
+        else:
+            messages.error(request, "Some error occurred, please try again")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
