@@ -36,10 +36,9 @@ Priority scale : P5 (maximum) to P1 (Least)
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | 1    | **Design app phase**  <br><br>P4: Build basic app layout in Django templates and exploring technologies for data analysis. <br>  P3: Exploring the data**                                                                                                                           | Problem statement analyzed roughly                                                                                |
 | 2    | **Design layout phase**<br><br>P4: Analysis of data <br> P3: Exploring data tools and methods <br> P2: Cleaning and parsing of data <br> P1: KNN Model creation                                                                                                                     | Data analysed and complexity evaluated                                                                            |
-| 3    | **DataAPI Implementation phase** <br><br>P5: Model trained after StandardScaling and dimensionality reduction (PCA) <br> P4: Views (Django) for interface implemented <br> P4: Views (Dataapi) for API implemented <br> P3: Templates (Django) are laid for proper viewing in HTML. | Major functionalities are added which consists of K Nearest Neighbours and other rating based sorting algorithms. |
+| 3    | **DataAPI Implementation phase** <br><br>P5: Model trained after Standard Scaling and Principle component analysis (PCA) <br> P4: Views (Django) for interface implemented <br> P4: Views (Dataapi) for API implemented <br> P3: Templates (Django) are laid for proper viewing in HTML. | Major functionalities are added which consists of K Nearest Neighbours and other rating based sorting algorithms along with Principle Component analysis to make it run faster. |
 | 4    | **CSS and Interface Implementation phase**<br><br>P5: Bugs reduced <br> P4: CSS Improved <br> P3: Non-Major Functionalities added                                                                                                                                                   | Overall improvement in UX/UI of the app                                                                           |
 ## 🚩 Features:
-List of Feature at [./features.md](features.md)
 | Features                                                                                                | Images                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Homepage** <br>Interact with movies, watch movie details, made with CSS \| Javascript \| JQuery       | Mouse hover<br>![image](https://github.com/prabhavagrawal7/watchnow/blob/master/readme_assets/hoverviewindex.gif?raw=true)                                                                                                                                                                                                                                                                                                 |
@@ -103,11 +102,11 @@ $ .\env\Scripts\activate
   ### 5. Migrate database from manage.py
   * For linux/unix users
   ``` 
-  $ python3 manage.py makemigrations
+  $ python3 manage.py migrate
   ``` 
   * For windows users 
   ```
-  $ python manage.py makemigrations
+  $ python manage.py migrate
   ```
   ### 6. Now Run the server as usual
   * For linux/unix users
