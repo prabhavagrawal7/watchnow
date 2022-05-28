@@ -23,6 +23,8 @@ def index(request):
         user_movies = datafetch.index_content()
         profile.save()
         return redirect(index)
+    else: 
+        user_movies = datafetch.index_content()
     return render(request, 'interface/index.html', {'user_movies': user_movies})
 
 

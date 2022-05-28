@@ -29,16 +29,21 @@
         grid-template-columns: auto auto auto;
         padding: 10px;
     }
-    .logo-container{
+
+    .logo-container {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .logo {
         height: 300px;
         width: 300px;
-        object-fit: scale-down;
+        padding: 20px;
+    }
+
+    .logo {
+        height: inherit;
+        width: inherit;
         display: block;
+        object-fit: scale-down;
     }
 </style>
 {% endblock %}
@@ -60,31 +65,45 @@
             <li> <a href="https://www.themoviedb.org/">The Movie Database API's </a> </tr>
         </ul>
         WatchNow has data collection of 7M+ users and 1K+ movies.
-        Only user rating data and rating count is being taken up.
-        <h2>Notable Mentions</h2>
+        Only user rating data is being taken up.
+        <h2>Notable Mentions (API's, tech stacks and references used)</h2>
         <div class="grid-container">
             <div class="logo-container">
                 <img src="{% static 'img/grouplens-logo.png' %}" class="logo" alt="grouplens-logo">
             </div>
             <div class="logo-container">
-            <img src="{% static 'img/tmdb-logo.svg' %}" class="logo" alt="tmdb-logo">
+                <img src="{% static 'img/tmdb-logo.svg' %}" class="logo" alt="tmdb-logo">
             </div>
             <div class="logo-container">
-            <img src="{% static 'img/django-logo.svg' %}" class="logo" alt="django-logo">
+                <img src="{% static 'img/django-logo.svg' %}" class="logo" alt="django-logo">
             </div>
             <div class="logo-container" style="background-color:orange">
-                <img src="{% static 'img/stackoverflow-logo.svg' %}" class="logo" alt="django-logo" >
-                </div>
-        </div>
-        <div class="row">
-            <div class="column">
+                <img src="{% static 'img/stackoverflow-logo.svg' %}" class="logo" alt="stackoverflow-logo">
             </div>
-            <div class="column">
-
+            <div class="logo-container">
+                <img src="{% static 'img/github-logo.png' %}" class="logo" alt="github-logo">
             </div>
+            <div class="logo-container">
+                <img src="{% static 'img/W3Schools-logo.png' %}" class="logo" alt="w3schools-logo">
+            </div>
+            <div class="logo-container" style="background-color:white">
+                <img src="{% static 'img/JQuery-logo.svg' %}" class="logo" alt="django-logo">
+            </div>
+            <div class="logo-container">
+                <img src="{% static 'img/html-logo.svg' %}" class="logo" alt="html-logo">
+            </div>
+            <div class="logo-container">
+                <img src="{% static 'img/css-logo.svg' %}" class="logo" alt="css-logo">
+            </div>
+            <div class="logo-container">
+                <img src="{% static 'img/javascript-logo.svg' %}" class="logo" alt="javascript-logo">
+            </div>
+            <div class="logo-container">
+                <img src="{% static 'img/python-logo.svg' %}" class="logo" alt="python-logo">
+            </div>
+                
         </div>
     </div>
-
 </body>
 
 {% endblock%}
