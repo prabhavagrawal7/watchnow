@@ -6,56 +6,55 @@
 
 {% endblock css %}
 {% block body %}
-    <div class="container">
-        <div class="text">Contact us For Any Query</div>
-        <br>
-        <hr style="background-color:#10171e;padding: 0px;">
-        <form action="/contact/" method="post">{% csrf_token %}>
-            <div class="form-row">
-                <div class="input-data">
-                    <input type="text" required id="name" name="name">
-                    <div class="inside"></div>
-                    <label for="">Name</label>
-                </div>
+<div class="container">
+    <div class="text">Contact us For Any Query</div>
+    <hr style="background-color:#10171e;padding: 0px;">
+    <form action="/contact/" method="post">{% csrf_token %}>
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" required id="name" name="name">
+                <div class="inside"></div>
+                <label for="name">Name</label>
             </div>
-            <div class="form-row">
-                <div class="input-data">
-                    <input type="text" required id="email" name="email">
-                    <div class="inside"></div>
-                    <label for="">Email Address</label>
-                </div>
-            <!-- </div>
-
-            <div class="form-row"> -->
-                <div class="input-data">
-                    <input type="number" style="outline=none" required id="phone" name="phone">
-                    <div class="inside"></div>
-                    <label for="">Phone Number</label>
-                </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" required id="email" name="email">
+                <div class="inside"></div>
+                <label for="email">Email Address</label>
             </div>
-            <div class="form-row">
-                <div class="input-data textarea">
-                    <textarea rows="8" cols="80" required id="desc" name="desc"></textarea>
-                    <br />
-                    <div class="inside"></div>
-                    <label for="">How may I help You</label>
-                    </div>
-                    </div>
-                    <div class="form-row submittt">
-                        <div class="input-btn" >
-                            <div class="inner"></div>
-                            <input type="submit" value="Submit" style="margin-left: 10%; height: 45px; width: 200px; background-color:#1a1c1d; color: #fff; font-size: 18px;">
-                        </div>
-                    </div>
-        </form>
-    </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data">
+                <input type="tel" required id="phone" name="phone">
+                <div class="inside"></div>
+                <label for="phone"
+                >Phone Number</label>
+            </div>
+        </div>
 
-    {% endblock body %}
-    {% block js %}
-    <script>
-        {% if thank %}
-        alert('Thanks for contacting us. We wil get back to you soon!');
-        document.location = "{% url 'index' %}";
-        {% endif %}
-    </script>
-    {% endblock js %}
+        <div class="form-row">
+            <div class="input-data textarea">
+                <textarea rows="8" cols="80" required id="desc" name="desc"></textarea>
+                <div class="inside"></div>
+                <label for="desc">How may I help You</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-btn">
+                <div class="inner"></div>
+                <input type="submit" class="btn-dark" value="Submit">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock body %}
+{% block js %}
+<script>
+    {% if thank %}
+    alert('Thanks for contacting us. We wil get back to you soon!');
+    document.location = "{% url 'index' %}";
+    {% endif %}
+</script>
+{% endblock js %}

@@ -8,8 +8,8 @@ To build a fully functional app which demonstrates  conversation.
 - [x] Status : Accomplised by extending to group calling app from 2 people 
 
 ##### Adopt feature:
-Include a chat feature in your application where meeting participants can share info without disrupting the flow of the meeting. Through this feature the participants should be able have conversation befor joining, while in the meet and after leaving the meeting.  
-- [x] Status : Accomplised  
+Demonstrate through your app the different kinds of algorithms that a web-streaming app (like Netflix) or an audio-streaming app (like Spotify) may use for their Recommendation Engine.  
+- [x] Status : Accomplished   
 
 <img width=49% src="/readme_assets/homepage.gif"> <img width=49% src="/readme_assets/hoveroverhome.gif">
 
