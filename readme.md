@@ -32,20 +32,18 @@ Agile methology was followed by implementation of
 KNN algorithm on the PCA transformed data which is pre-processed in the jupyter-notebook.
 The methods were performed using git version control system and successfully developed patches which were merged to main branch. Methods were performed according to priority scale.
 Priority scale : P5 (maximum) to P1 (Least)
-
-| Week | Task |  Remarks |
-|------|:----:|---------|
-| 1    | **Design phase**   
- P4: Build basic app layout in Django templates and exploring technologies for data analysis. |  P3: Exploring the data | P2: Chatbox  |   Successfull setup implementation and chat box            |
-| 2    | P4: Screen Sharing , P3: Filters , P2:Send messages button , P5: PeerId undefined(Bug)     |    All bugs resolved             |
-| 3    | P4: List of Participants, P5: Firebase reference error , P3:Hand raise , P5: PeerId undefined(Bug) , P4: Video call connection     |     Problem statement tasking completed|
-| 4    | **Desgin phase and build** P4: Chat Before and after with chat rooms , **Testing and review** P3:Hosting on Azure , P5: Service unavaible error 505 (Bug) , P4: Homepage , P3:Record of participants    |    Adopted task completed  , Branch changing resolved bug             |
-
+| Week | Task | Remarks |
+|---|---|---|
+| 1 | **Design app phase**  <br><br>P4: Build basic app layout in Django templates and exploring technologies for data analysis. <br>  P3: Exploring the data** | Problem statement analyzed roughly |
+| 2 | **Design layout phase**<br><br>P4: Analysis of data <br> P3: Exploring data tools and methods <br> P2: Cleaning and parsing of data <br> P1: KNN Model creation | Data analysed and complexity evaluated  |
+| 3 | **DataAPI Implementation phase** <br><br>P5: Model trained after StandardScaling and dimensionality reduction (PCA) <br> P4: Views (Django) for interface implemented <br> P4: Views (Dataapi) for API implemented <br> P3: Templates (Django) are laid for proper viewing in HTML.  | Major functionalities are added which consists of K Nearest Neighbours and other rating based sorting algorithms. |
+| 4 | **CSS and Interface Implementation phase**<br><br>P5: Bugs reduced <br> P4: CSS Improved <br> P3: Non-Major Functionalities added | Overall improvement in UX/UI of the app |
 ## 🚩 Features:
 List of Feature at [./features.md](features.md)
-Feature | Images
+Features | Images
 ------------ | -------------
- **Hompage**  
+ **Homepage**  
+ Mouse interaction is the motivation of watching movies and learning to know more, made using CSS and some amount of JQuery | [image]()
  Mouse Interactive UI is motivation of connecting around the globe feature using particle.js . Options for users : **Profile Login** : To see all records of user ,access chatroom and meeting , **Join Meet**  , **Start new Meeting**  | <img width="750px" height="300px" src="/readme_assets/hoveroverhome.gif">
 Meeting Screen![image](https://user-images.githubusercontent.com/56452820/125260357-e3c7a200-e31d-11eb-8c96-e70cfbe9a708.png) |White board ![image](https://user-images.githubusercontent.com/56452820/125260142-a82cd800-e31d-11eb-8718-c69fd8052f7b.png) | 
  Tool bar| ![Mute Unmute](https://user-images.githubusercontent.com/56452820/125264078-2c348f00-e321-11eb-981f-8b2c7f68fee9.png) 
