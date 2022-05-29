@@ -16,8 +16,9 @@ To make an app that is fully functional and demonstrates how algorithms work in 
 
 <!-- under development -->
 ## 🔗 Links for project:
- 
- Video link: [Not made](Not made)  
+ Project Video link: [Google Drive](https://drive.google.com/file/d/1VZGbVb22E3iyShx92yYovf7QZZwndAzw/view?usp=sharing)  
+ Data Link: [MovieLens Tag Genome Dataset 2021](https://files.grouplens.org/datasets/tag-genome-2021/genome_2021.zip)  
+ Link for project + data rendered [https://drive.google.com/drive/u/1/folders/18gqvUuakncgQBJA4CLrlAYMsfs4Rdwoq](https://drive.google.com/drive/u/1/folders/18gqvUuakncgQBJA4CLrlAYMsfs4Rdwoq)
 
 ## 🌐 Web flow
 <!-- under development -->

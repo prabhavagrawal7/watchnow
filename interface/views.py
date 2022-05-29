@@ -135,8 +135,6 @@ def moviePage(request, movie_id):
                       'movie_rating': round(movie.movie_rating_sum/movie.movie_rating_count, 2),
                   })
 
-# Under development
-
 
 def userRating(request, movie_id):
     """
@@ -167,8 +165,6 @@ def userRating(request, movie_id):
         movie.save()
         profile.save()
         return redirect(f'/movie/{movie_id}')
-
-# Under development
 
 
 def contact(request):
