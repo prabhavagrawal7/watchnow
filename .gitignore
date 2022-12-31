@@ -1,5 +1,5 @@
 # dataapi/movie_dataset/
-dataapi/movie_dataset/.ipynb_checkpoints
+# dataapi/movie_dataset/.ipynb_checkpoints
 __pycache__/
 db.sqlite3
 .DS_Store
