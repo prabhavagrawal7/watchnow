@@ -5,7 +5,6 @@ from joblib import load
 import numpy as np
 import pandas as pd
 from django.db import migrations
-from ast import literal_eval as eval
 popular_movie_list = load('./dataapi/movie_dataset/popular_movies_list.joblib')
 links = pd.read_csv('./dataapi/movie_dataset/links.csv')
 movies_info = pd.read_csv(
@@ -22,8 +21,7 @@ def fetch_movie(movie_id):
     movie_genres = movie_info['genres']
     movie_rating_count = int(movie_info['vote_count'])
     movie_rating_sum = round(movie_rating_count*movie_info['vote_average'])
-    movie_trailer_links = [result['key'] for result in eval(movie_info['videos'])['results']
-                          if result['type'] == 'Trailer']
+    movie_trailer_links = [result['key'] for result in eval(movie_info['videos'])['results'] if result['type'] == 'Trailer']
     if len(movie_trailer_links) == 0:
         try: 
             movie_trailer_links.append(eval(movie_info['videos'])['results'][0]['key'])
