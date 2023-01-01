@@ -10,12 +10,11 @@ Saving features using joblib
 5. transformed_data
 6. movie_index
 """
-model, transformed_data, movie_indexes = load(
-    './dataapi/movie_dataset/required_contents.joblib')
+model, transformed_data, movie_indexes = load('./dataapi/movie_dataset/required_contents.joblib')
 hash_loc = None
 popular_movie_list = load('./dataapi/movie_dataset/popular_movies_list.joblib')
 all_genres = load('./dataapi/movie_dataset/all_genres.joblib')
-genres_dict = {}
+genres_dict = {} 
 
 def create_hash():
     """
